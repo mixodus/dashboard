@@ -23,7 +23,7 @@
                   </div>
                   <br>
                 @endif
-                <table class="table table-responsive-sm table-striped">
+                <table class="table table-responsive-sm stripe" id="style_data">
                         <thead>
                           <tr>
                             <th>No</th>
@@ -40,7 +40,7 @@
                               <td>{{ $results->role_name }}</td>
                               <td>
                               @if(in_array("view", $action))
-                                <a href="" class="btn btn-block btn-info">View</a>
+                                <a href="{{ env('APP_URL', '').'/dashboard/settings/roles/view/'.$results->role_id }}" class="btn btn-block btn-info">View</a>
                               @endif
                               </td>
                               <td>
@@ -50,9 +50,7 @@
                               </td>
                               <td>
                               @if(in_array("delete", $action))
-                                <form action="" method="POST">
-                                    <button class="btn btn-block btn-danger">Delete User</button>
-                                </form>
+                              <button class="btn btn-block btn-danger" onclick="deleteConfirmation({{$results->role_id}})">Delete Role</button>
                               @endif
                               </td>
                             </tr>
@@ -64,74 +62,6 @@
               </div>
             </div>
           </div>
-                    <!-- <div class="col-sm-5">
-                      <h4 class="card-title mb-0">Traffic</h4>
-                      <div class="small text-muted">September 2019</div>
-                    </div> -->
-                    <!-- /.col-->
-                    <!-- <div class="col-sm-7 d-none d-md-block">
-                      <button class="btn btn-primary float-right" type="button">
-                        <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-cloud-download"></use>
-                        </svg>
-                      </button>
-                      <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
-                        <label class="btn btn-outline-secondary">
-                          <input id="option1" type="radio" name="options" autocomplete="off"> Day
-                        </label>
-                        <label class="btn btn-outline-secondary active">
-                          <input id="option2" type="radio" name="options" autocomplete="off" checked=""> Month
-                        </label>
-                        <label class="btn btn-outline-secondary">
-                          <input id="option3" type="radio" name="options" autocomplete="off"> Year
-                        </label>
-                      </div>
-                    </div> -->
-                    <!-- /.col-->
-                  <!-- </div> -->
-                  <!-- /.row-->
-                  <!-- <div class="c-chart-wrapper" style="height:300px;margin-top:40px;">
-                    <canvas class="chart" id="main-chart" height="300"></canvas>
-                  </div> -->
-                <!-- </div> -->
-                <!-- <div class="card-footer">
-                  <div class="row text-center">
-                    <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                      <div class="text-muted">Visits</div><strong>29.703 Users (40%)</strong>
-                      <div class="progress progress-xs mt-2">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                      <div class="text-muted">Unique</div><strong>24.093 Users (20%)</strong>
-                      <div class="progress progress-xs mt-2">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                      <div class="text-muted">Pageviews</div><strong>78.706 Views (60%)</strong>
-                      <div class="progress progress-xs mt-2">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                      <div class="text-muted">New Users</div><strong>22.123 Users (80%)</strong>
-                      <div class="progress progress-xs mt-2">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                      <div class="text-muted">Bounce Rate</div><strong>40.15%</strong>
-                      <div class="progress progress-xs mt-2">
-                        <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-              <!-- /.card-->
-              
-              <!-- /.row-->
              
         
 @endsection
@@ -141,5 +71,53 @@
     <script src="{{ asset('js/Chart.min.js') }}"></script>
     <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
+    <script type="text/javascript">
+      function deleteConfirmation(id) {
+          swal({
+              title: "Delete role",
+              text: "Are you sure you want to delete data?",
+              type: "warning",
+              showCancelButton: !0,
+              cancelButtonText: "cancel",
+              confirmButtonText: "delete",
+              reverseButtons: !0
+          }).then(function (e) {
+              if (e.value === true) {
+                  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                  $.ajax({
+                      type: 'GET',
+                      url: "{{url('/dashboard/settings/roles/delete')}}/"+id,
+                      data: {_token: CSRF_TOKEN},
+                      dataType: 'JSON',
+                      success: function (results) {
+                          if (results.success === true) {
+                              swal("Done!", results.message, "success").then(function (e){
+                                if (e.value === true){
+                                    window.location.reload();
+                                }
+                              });
+                          } else {
+                              swal("Error!", results.message, "error");
+                          }
+                      }
+                  });
+
+              } else {
+                  e.dismiss;
+              }
+
+          }, function (dismiss) {
+              return false;
+          })
+      }
+
+      $(document).ready(function() {
+          $('#style_data').DataTable( {
+            "searching": false,
+            "ordering": false,
+          } );
+      } );
+    </script>
 @endsection
 

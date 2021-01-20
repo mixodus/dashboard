@@ -23,14 +23,40 @@ Route::group(['middleware' => ['login.check']], function () {
         Route::group(['middleware' => ['get.menu']], function () {
             Route::prefix('dashboard')->group(function () {
                 Route::get('/', function () {return view('one.home.homepage'); });
-                Route::get('/user-management/admin', 'one\Admin\AdminController@index');
+                Route::get('/location/city/show/{id}', 'one\General\LocationController@get_city');
+                Route::get('/jobs', 'one\jobs\JobsController@index');
+                Route::get('/jobs/create', 'one\jobs\JobsController@create');
+                Route::post('/jobs/store', 'one\jobs\JobsController@store');
+                Route::get('/jobs/edit/{id}', 'one\jobs\JobsController@edit');
+                Route::put('/jobs/update/{id}', 'one\jobs\JobsController@update');
+                Route::get('/jobs/delete/{id}', 'one\jobs\JobsController@destroy');
 
                 Route::prefix('settings')->group(function () {
                     Route::get('/roles', 'one\settings\RolesController@index');
+                    Route::get('/roles/view/{id}','one\settings\RolesController@show');
                     Route::get('/roles/create','one\settings\RolesController@formcreate');
                     Route::post('/roles/store','one\settings\RolesController@store');
                     Route::get('/roles/edit/{id}','one\settings\RolesController@edit');
                     Route::put('/roles/update/{id}','one\settings\RolesController@update');
+                    Route::get('/roles/delete/{id}','one\settings\RolesController@destroy');
+                });
+
+                Route::prefix('user-management')->group(function () {
+                    Route::get('/admin', 'one\Admin\AdminController@index');
+                    Route::get('/admin/view/{id}','one\Admin\AdminController@show');
+                    Route::get('/admin/create', 'one\Admin\AdminController@formcreate');
+                    Route::post('/admin/store', 'one\Admin\AdminController@store');
+                    Route::get('/admin/edit/{id}','one\Admin\AdminController@edit');
+                    Route::put('/admin/update/{id}','one\Admin\AdminController@update');
+                    Route::get('/admin/delete/{id}','one\Admin\AdminController@destroy');
+                    Route::get('/employee', 'one\Employee\EmployeeController@index');
+                    Route::get('/employee/view/{id}', 'one\Employee\EmployeeController@show');
+                    Route::get('/employee/edit/{id}', 'one\Employee\EmployeeController@edit');
+                    Route::put('/employee/update/{id}', 'one\Employee\EmployeeController@update');
+                    Route::get('/employee/delete/{id}', 'one\Employee\EmployeeController@destroy');
+                    Route::get('/employee-level', 'one\Level\LevelController@index');
+                    Route::get('/employee-level/view/{id}', 'one\Level\LevelController@show');
+                    Route::post('/employee-level/create', 'one\Level\LevelController@store');
                 });
             });
             

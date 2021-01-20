@@ -10,7 +10,7 @@
               <div class="card-body">
                 <h1>Login</h1>
                 <p class="text-muted">Sign In to your account</p>
-                <!-- <form> --><form method="POST" action="{{ route('post.login') }}">
+                <form method="POST" action="{{ route('post.login') }}">
                     @csrf
                     <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -39,9 +39,20 @@
                     @enderror
                     </div>
                     <div class="row">
-                    <div class="col-6">
-                        <button class="btn btn-primary px-4" type="submit">{{ __('Login') }}</button>
+                      <div class="col-12">
+                        @if ($errors->has('password'))
+                          <!-- <span class="help-block" role="alert"> -->
+                          <div class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $errors->first('password') }}</strong>
+                          </div>
+                          <!-- </span> -->
+                        @endif
+                      </div>
                     </div>
+                    <div class="row">
+                      <div class="col-6">
+                          <button class="btn btn-primary px-4" type="submit">{{ __('Login') }}</button>
+                      </div>
                     </form>
                     <div class="col-6 text-right">
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\one\Settings;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Library\One\ApiLibrary;
+use Alert;
 
 class RolesController extends Controller
 {
@@ -21,7 +22,6 @@ class RolesController extends Controller
     {
         $token = $request->session()->get('token');
         $put['data'] = ['token' => $token];
-        $action = ['vew', 'delete'];
 
         $this->apiLib->setParams($put['data']);
         $result = $this->apiLib->generate('GET','/api/settings/roles');
@@ -32,7 +32,8 @@ class RolesController extends Controller
             $action = $result->action->original;
             return view('one.role.roleList',compact('data', 'action'));
         }else{
-            dd('b');
+            $err_messages = "Server Error"; 
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
 
@@ -54,9 +55,11 @@ class RolesController extends Controller
             $data = $result->data;
             return view('one.role.roleCreate',compact('data'));
         }else{
-            dd('b');
+            $err_messages = "Server Error"; 
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
+    
     public function create()
     {
         //
@@ -82,20 +85,22 @@ class RolesController extends Controller
 		foreach($request->action as $a)
 		{
 			$tes= explode("-", $a);
-			$permission= ['menu_id' => $tes[0], 'action' =>$tes[1]]; 
+			$permission= ['menu_id' => $tes[0], 'actions' =>$tes[1]]; 
 			array_push($valn, $permission);
         }
-        $data = ['company_id' => 1, 'role_name' => $request->role_id, 'token' => $token];
+        $data = ['company_id' => 1, 'role_name' => $request->role_name, 'token' => $token];
         $data['permissions'] = $valn;
-        
+        // dd($data);
         $this->apiLib->setParams($data);
         $result = $this->apiLib->generate('POST','/api/settings/roles-create');
         
         if($result->status == true)
         {
-            return redirect('/dashboard/settings/roles')->with('success',$result->message);
+            toast('Success create role','success');
+            return redirect('/dashboard/settings/roles');
         }else{
-            return redirect('/dashboard/settings/roles/edit/'.$id)->with('error',$result->message);
+            toast('Failed create role','error');
+            return redirect('/dashboard/settings/roles/create');
         }
     }
 
@@ -105,9 +110,36 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        try {
+            $token = $request->session()->get('token');
+            $put['data'] = ['token' => $token, 'role_id' => $id];
+
+            $this->apiLib->setParams($put['data']);
+            $result = $this->apiLib->generate('GET','/api/settings/roles-show');
+            if (!$result) {
+                throw new \Exception("Failed get role");
+            }
+
+            $result_permission = $this->apiLib->generate('GET','/api/settings/permissions');
+            if (!$result_permission) {
+                throw new \Exception("Failed get permission");
+            }
+
+            $result_rolepermission = $this->apiLib->generate('GET','/api/settings/roles-edit');
+            if (!$result_rolepermission) {
+                throw new \Exception("Failed get role permission");
+            }
+
+            $data = $result->data;
+            $permission = $result_permission->data;
+            $role_permission = ($result_rolepermission->data != "")? $result_rolepermission->data : [];
+            
+            return view('one.role.roleView',compact('data', 'permission', 'role_permission'));
+        } catch (\Exception $e) {
+            return $this->services->response(404, $e->getMessage());
+        }
     }
 
     /**
@@ -138,16 +170,16 @@ class RolesController extends Controller
             if (!$result_rolepermission) {
                 throw new \Exception("Failed get role permission");
             }
-        // \DB::commit();
+        
             $data = $result->data;
             $permission = $result_permission->data;
             $role_permission = ($result_rolepermission->data != "")? $result_rolepermission->data : [];
             
             return view('one.role.roleUpdate',compact('data', 'permission', 'role_permission'));
         } catch (\Exception $e) {
-        //     \DB::rollback();
-        
-            return $this->services->response(404, $e->getMessage());
+
+            $err_messages = $e->getMessage(); 
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
 
@@ -176,8 +208,10 @@ class RolesController extends Controller
         
         if($result->status == true)
         {
-            return redirect('/dashboard/settings/roles')->with('success',$result->message);
+            toast('Success update role','success');
+            return redirect('/dashboard/settings/roles');
         }else{
+            toast('Failed update role','error');
             return redirect('/dashboard/settings/roles/edit/'.$id)->with('error',$result->message);
         }
     }
@@ -188,8 +222,23 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        // print_r($id);
+        $token = $request->session()->get('token');
+        $data = ['token' => $token];
+        $this->apiLib->setParams($data);
+        $result = $this->apiLib->generate('delete','/api/settings/roles-delete/'.$id);
+        
+        if($result->status == true)
+        {
+            $success = true;
+            $message = "User deleted successfully";
+        }else{
+            $success = false;
+            $message = "Delete role filed";
+        }
+
+        return response()->json(['success' => $success, 'message' => $message]);
     }
 }

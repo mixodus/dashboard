@@ -16,8 +16,8 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
@@ -33,6 +33,7 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
+        '6b34c85f7b1ad6faa15aa12109e030f2' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/functions.php',
         '377b22b161c09ed6e5152de788ca020a' => __DIR__ . '/..' . '/spatie/laravel-permission/src/helpers.php',
         '80243476c78ec36ff8d9c0fcf7a3da72' => __DIR__ . '/../..' . '/database/seeds/UsersAndNotesSeeder.php',
         '5d09ebb54ead8db51946602d912ce46b' => __DIR__ . '/../..' . '/database/seeds/MenusTableSeeder.php',
@@ -101,6 +102,7 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         ),
         'R' => 
         array (
+            'RealRashid\\SweetAlert\\' => 22,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
@@ -347,6 +349,10 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         array (
             0 => __DIR__ . '/..' . '/spatie/image-optimizer/src',
         ),
+        'RealRashid\\SweetAlert\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/realrashid/sweet-alert/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -570,7 +576,9 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         'App\\Http\\Controllers\\RolesController' => __DIR__ . '/../..' . '/app/Http/Controllers/RolesController.php',
         'App\\Http\\Controllers\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/UsersController.php',
         'App\\Http\\Controllers\\admin\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/admin/UsersController.php',
+        'App\\Http\\Controllers\\one\\Admin\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/one/Admin/AdminController.php',
         'App\\Http\\Controllers\\one\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/one/LoginController.php',
+        'App\\Http\\Controllers\\one\\Settings\\RolesController' => __DIR__ . '/../..' . '/app/Http/Controllers/one/Settings/RolesController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Menus\\GetSidebarMenu' => __DIR__ . '/../..' . '/app/Http/Menus/GetSidebarMenu.php',
         'App\\Http\\Menus\\MenuInterface' => __DIR__ . '/../..' . '/app/Http/Menus/MenuInterface.php',
@@ -583,7 +591,9 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Middleware\\one\\Login' => __DIR__ . '/../..' . '/app/Http/Middleware/One/Login.php',
         'App\\Library\\ApiLibrary' => __DIR__ . '/../..' . '/app/Library/ApiLibrary.php',
+        'App\\Library\\One\\ApiLibrary' => __DIR__ . '/../..' . '/app/Library/One/ApiLibrary.php',
         'App\\MenuBuilder\\FreelyPositionedMenus' => __DIR__ . '/../..' . '/app/MenuBuilder/FreelyPositionedMenus.php',
         'App\\MenuBuilder\\MenuBuilder' => __DIR__ . '/../..' . '/app/MenuBuilder/MenuBuilder.php',
         'App\\MenuBuilder\\RenderFromDatabaseData' => __DIR__ . '/../..' . '/app/MenuBuilder/RenderFromDatabaseData.php',
@@ -4197,6 +4207,13 @@ class ComposerStaticInitfc95eb8bdf85950dacf743ecbea197d8
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'RealRashid\\SweetAlert\\Console\\PublishCommand' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/Console/PublishCommand.php',
+        'RealRashid\\SweetAlert\\Facades\\Alert' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/Facades/Alert.php',
+        'RealRashid\\SweetAlert\\Storage\\AlertSessionStore' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/Storage/AlertSessionStore.php',
+        'RealRashid\\SweetAlert\\Storage\\SessionStore' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/Storage/SessionStore.php',
+        'RealRashid\\SweetAlert\\SweetAlertServiceProvider' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/SweetAlertServiceProvider.php',
+        'RealRashid\\SweetAlert\\ToSweetAlert' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/ToSweetAlert.php',
+        'RealRashid\\SweetAlert\\Toaster' => __DIR__ . '/..' . '/realrashid/sweet-alert/src/Toaster.php',
         'SebastianBergmann\\CodeCoverage\\CodeCoverage' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/CodeCoverage.php',
         'SebastianBergmann\\CodeCoverage\\CoveredCodeNotExecutedException' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Exception/CoveredCodeNotExecutedException.php',
         'SebastianBergmann\\CodeCoverage\\Driver\\Driver' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Driver/Driver.php',
