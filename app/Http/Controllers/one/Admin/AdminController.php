@@ -5,6 +5,7 @@ namespace App\Http\Controllers\one\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Library\One\ApiLibrary;
+use Alert;
 
 class AdminController extends Controller
 {
@@ -21,16 +22,34 @@ class AdminController extends Controller
     {
         $token = $request->session()->get('token');
         $put['data'] = ['token' => $token];
-
+        
         $this->apiLib->setParams($put['data']);
         $result = $this->apiLib->generate('GET','/api/admin');
+        
+        if(!empty($result->status))
+        {
+            $data = $result->data;
+            $action = $result->action->original;
+
+            return view('one.admin.usersList',compact('data', 'action'));
+        }else{
+            $err_messages = "Server Error"; 
+            return view('one.errors.errors', compact('err_messages'));
+        }
+    }
+
+    public function formcreate(Request $request)
+    {
+        $token = $request->session()->get('token');
+        $put['data'] = ['token' => $token];
+        
+        $this->apiLib->setParams($put['data']);
+        $result = $this->apiLib->generate('GET','/api/settings/roles');
         
         if($result->status == true)
         {
             $data = $result->data;
-            return view('one.admin.usersList',compact('data'));
-        }else{
-            dd('b');
+            return view('one.admin.usersCreate',compact('data'));
         }
     }
 
@@ -52,7 +71,35 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $token = $request->session()->get('token');
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:10|min:3',
+            'company_name' => 'required',
+            'role_id' => 'required',
+            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
+            'password' => ['required', 'min:6', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/','required_with:confrim_password','same:confrim_password'],
+            'confrim_password' => 'required'
+        ]);
+
+        $put['data'] = ['first_name' => $request->first_name, 
+                 'company_name' => $request->company_name, 
+                 'role_id' => $request->role_id,
+                 'email' => $request->email,
+                 'password' => $request->password,
+                 'confrim_password' => $request->confrim_password
+                ];
+        
+        $this->apiLib->setParams($put['data']);
+        $result = $this->apiLib->generate('POST','/admin/register');
+        
+        if($result->status == true)
+        {
+            toast('Success create user admin','success');
+            return redirect('/dashboard/user-management/admin');
+        }else{
+            toast('Failed create user admin','error');
+            return redirect('/dashboard/user-management/admin/create');
+        }
     }
 
     /**
@@ -61,9 +108,23 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        try {
+            $token = $request->session()->get('token');
+            $put['data'] = ['token' => $token, 'user_id' => $id];
+
+            $this->apiLib->setParams($put['data']);
+            $result = $this->apiLib->generate('GET','/api/admin/show');
+            if (!$result) {
+                throw new \Exception("Failed get Admin");
+            }
+            
+            $data = $result->data;
+            return view('one.Admin.usersView', compact('data'));
+        } catch (\Exception $e) {
+            return $this->services->response(404, $e->getMessage());
+        }
     }
 
     /**
@@ -72,9 +133,27 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        try {
+            $token = $request->session()->get('token');
+            $put['data'] = ['token' => $token, 'user_id' => $id];
+
+            $this->apiLib->setParams($put['data']);
+            $result = $this->apiLib->generate('GET','/api/admin/show');
+            if (!$result) {
+                throw new \Exception("Failed get Admin");
+            }
+
+            $this->apiLib->setParams($put['data']);
+            $result_role = $this->apiLib->generate('GET','/api/settings/roles');
+            
+            $data = $result->data;
+            $data_role = $result_role->data;
+            return view('one.Admin.usersUpdate', compact('data', 'data_role'));
+        } catch (\Exception $e) {
+            return $this->services->response(404, $e->getMessage());
+        }
     }
 
     /**
@@ -86,7 +165,31 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $token = $request->session()->get('token');
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:10|min:3',
+            'company_name' => 'required',
+            'role_id' => 'required',
+            'is_active' => 'required|integer|max:1'
+        ]);     
+
+            $put['data'] = [
+                            'first_name' => $request->first_name, 
+                            'company_name' => $request->company_name, 
+                            'role_id' => $request->role_id, 
+                            'is_active' => $request->is_active, 
+                            'token' => $token
+                        ];
+            $this->apiLib->setParams($put['data']);
+            $result = $this->apiLib->generate('PUT','/api/admin/admin-update/'.$id);
+
+        if(!empty($result->status)){
+            toast('Success update user admin','success');
+            return redirect('/dashboard/user-management/admin');
+        }else{
+            toast('Failed update user admin','error');
+            return redirect('/dashboard/user-management/admin/edit/'.$id);
+        }
     }
 
     /**
@@ -95,8 +198,22 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $token = $request->session()->get('token');
+        $data = ['token' => $token];
+        $this->apiLib->setParams($data);
+        $result = $this->apiLib->generate('delete','/api/admin/admin-delete/'.$id);
+        
+        if(!empty($result->status))
+        {
+            $success = true;
+            $message = "User deleted successfully";
+        }else{
+            $success = false;
+            $message = "Delete role filed";
+        }
+
+        return response()->json(['success' => $success, 'message' => $message]);
     }
 }

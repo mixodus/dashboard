@@ -12,7 +12,7 @@
               @endif
               <div class="card">
                 <div class="card-header">
-                      <i class="fa fa-align-justify"></i>Create Role
+                      <i class="fa fa-align-justify"></i>Edit Role
                 </div>
                 <div class="card-body">
                 <div class="row">
