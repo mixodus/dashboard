@@ -90,17 +90,15 @@ class RolesController extends Controller
         }
         $data = ['company_id' => 1, 'role_name' => $request->role_name, 'token' => $token];
         $data['permissions'] = $valn;
-        // dd($data);
+       
         $this->apiLib->setParams($data);
         $result = $this->apiLib->generate('POST','/api/settings/roles-create');
         
         if($result->status == true)
         {
-            toast('Success create role','success');
-            return redirect('/dashboard/settings/roles');
+            return redirect('/dashboard/settings/roles')->with('success', $result->message);;
         }else{
-            toast('Failed create role','error');
-            return redirect('/dashboard/settings/roles/create');
+            return redirect()->back()->with('success', $result->message);
         }
     }
 
@@ -202,17 +200,20 @@ class RolesController extends Controller
         }
         $data = ['company_id' => 1, 'role_name' => $request->role_id, 'token' => $token];
         $data['permissions'] = $valn;
+
+        try {
+            $this->apiLib->setParams($data);
+            $result = $this->apiLib->generate('PUT','/api/settings/roles-update/'.$id);
         
-        $this->apiLib->setParams($data);
-        $result = $this->apiLib->generate('PUT','/api/settings/roles-update/'.$id);
-        
-        if($result->status == true)
-        {
-            toast('Success update role','success');
-            return redirect('/dashboard/settings/roles');
-        }else{
-            toast('Failed update role','error');
-            return redirect('/dashboard/settings/roles/edit/'.$id)->with('error',$result->message);
+            if($result->status == true)
+            {
+                return redirect('/dashboard/settings/roles')->with('success', $result->message);
+            }else{
+                return redirect()->back()->with('error', $result->message);
+            }
+        } catch (\Exception $e) {  
+            $err_messages = $e->getMessage(); 
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
 
@@ -233,10 +234,10 @@ class RolesController extends Controller
         if($result->status == true)
         {
             $success = true;
-            $message = "User deleted successfully";
+            $message = $result->message;
         }else{
             $success = false;
-            $message = "Delete role filed";
+            $message = $result->message;
         }
 
         return response()->json(['success' => $success, 'message' => $message]);

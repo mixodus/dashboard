@@ -24,12 +24,37 @@ Route::group(['middleware' => ['login.check']], function () {
             Route::prefix('dashboard')->group(function () {
                 Route::get('/', function () {return view('one.home.homepage'); });
                 Route::get('/location/city/show/{id}', 'one\General\LocationController@get_city');
+
+                //Jobs Page
                 Route::get('/jobs', 'one\jobs\JobsController@index');
                 Route::get('/jobs/create', 'one\jobs\JobsController@create');
                 Route::post('/jobs/store', 'one\jobs\JobsController@store');
                 Route::get('/jobs/edit/{id}', 'one\jobs\JobsController@edit');
                 Route::put('/jobs/update/{id}', 'one\jobs\JobsController@update');
                 Route::get('/jobs/delete/{id}', 'one\jobs\JobsController@destroy');
+
+                //News Page
+                Route::get('/news-article', 'one\News\NewsController@index');
+                Route::get('/news-article/view/{id}', 'one\News\NewsController@show');
+                Route::get('/news-article/create', 'one\News\NewsController@create');
+                Route::post('/news/store', 'one\News\NewsController@store');
+                Route::get('/news-article/edit/{id}', 'one\News\NewsController@edit');
+                Route::post('/news-article/update/{id}', 'one\News\NewsController@update');
+                Route::get('/news-article/delete/{id}', 'one\News\NewsController@destroy');
+                Route::post('/news-article/addcomment', 'one\News\NewsController@addcomment');
+                Route::get('/news-article/deletecomment/{id}', 'one\News\NewsController@deletecomment');
+                Route::post('/news-article/replycomment', 'one\News\NewsController@replycomment');
+                Route::get('/news-article/del-replycomment/{id}', 'one\News\NewsController@deletereplycomment');
+
+                //Event Page
+                Route::get('/event', 'one\Event\EventController@index');
+                Route::get('/event/view/{id}', 'one\Event\EventController@show');
+                Route::get('/event/create', 'one\Event\EventController@create');
+                Route::post('/event/store', 'one\Event\EventController@store');
+                Route::get('/event/edit/{id}', 'one\Event\EventController@edit');
+                Route::post('/event/update/{id}', 'one\Event\EventController@update');
+                Route::get('/event/delete/{id}', 'one\Event\EventController@destroy');
+                Route::post('/event/register-status/{id}', 'one\Event\EventController@registerStatus');
 
                 Route::prefix('settings')->group(function () {
                     Route::get('/roles', 'one\settings\RolesController@index');
@@ -57,6 +82,13 @@ Route::group(['middleware' => ['login.check']], function () {
                     Route::get('/employee-level', 'one\Level\LevelController@index');
                     Route::get('/employee-level/view/{id}', 'one\Level\LevelController@show');
                     Route::post('/employee-level/create', 'one\Level\LevelController@store');
+                });
+
+                Route::prefix('log')->group(function () {
+                    Route::get('/dashboard-log', 'one\Log\LogController@dashboardLog');
+                    Route::get('/dashboard-log/show/{id}', 'one\Log\LogController@dashboardLogShow');
+                    Route::get('/mobile-log', 'one\Log\LogController@mobileLog');
+                    Route::get('/mobile-log/show/{id}', 'one\Log\LogController@mobileLogShow');
                 });
             });
             

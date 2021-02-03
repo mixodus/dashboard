@@ -49,6 +49,5 @@ class LoginController extends Controller {
 
         $request->session()->forget('token');
         return redirect('/');
-
     }
 }

@@ -32,22 +32,11 @@
                         </span>
                     </div>
                     <input class="form-control" type="password" placeholder="{{ __('Password') }}" name="password" required>
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        @if ($errors->has('password'))
-                          <!-- <span class="help-block" role="alert"> -->
-                          <div class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('password') }}</strong>
-                          </div>
-                          <!-- </span> -->
-                        @endif
+                    @if ($errors->has('password'))
+                      <div class="invalid-feedback d-block" role="alert">
+                        <strong>{{ $errors->first('password') }}</strong>
                       </div>
+                    @endif
                     </div>
                     <div class="row">
                       <div class="col-6">
