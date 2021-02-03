@@ -3,6 +3,7 @@ namespace App\Library\One;
 
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client as GuzzleClient;
+
 use Illuminate\Http\Request;
 
 class ApiLibrary
@@ -10,6 +11,7 @@ class ApiLibrary
 
     protected $endpoint;
     protected $params = [];
+    protected $token = [];
     protected $apiBaseUrl;
     protected $apiAuth;
 
@@ -18,14 +20,18 @@ class ApiLibrary
     protected $response = [];
 
     public function setParams($params){
-        $this->params = $params;
+        $this->params   = $params;
+    }
+
+    public function setToken($token){
+        $this->token   = $token;
     }
 
     public function getParams(){
         return $this->params;
     }
 
-    public function generate($action = 'GET', $setEndPoint, $timeOut = 30){
+    public function generate($action = '', $setEndPoint, $timeOut = 30){
         
         $this->apiBaseUrl = env("API_URL", "");
         $action = strtoupper($action);
@@ -80,16 +86,45 @@ class ApiLibrary
             ]);
     
             $hits_api = $client->request($action, $endpoint, [
-                'body' => $body
+                'body' => $body  
             ]);
             $response = json_decode($hits_api->getBody());
             return $response;
         }catch (\Throwable $e){
-            $response = $e->getResponse()->getStatusCode();
-            return $response;
+            $response = $e->getResponse();
+            $responseBody = json_decode($response->getBody()->getContents());
+            return $responseBody;
         }
     }
 
+    public function generateUpload($action = '', $setEndPoint, $timeOut = 30){
 
+        $this->apiBaseUrl = env("API_URL", "");
+        $action = strtoupper($action);
+        
+        $endpoint = $this->apiBaseUrl.$setEndPoint;
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'multipart/form-data',
+            'X-Api-Key' => env('API_KEY'),
+            'X-Token'  => $this->token
+        ];
+
+        try {
+            $client = new GuzzleClient([
+                'headers' => $headers,
+                'multipart' => $this->params
+            ]);
+    
+            $hits_api = $client->request($action, $endpoint);
+
+            $response = json_decode($hits_api->getBody());
+            return $response;
+        }catch (\Throwable $e){
+            $response = $e->getResponse();
+            $responseBody = json_decode($response->getBody()->getContents());
+            return $responseBody;
+        }
+    }
 }
 ?>

@@ -94,11 +94,9 @@ class AdminController extends Controller
         
         if($result->status == true)
         {
-            toast('Success create user admin','success');
-            return redirect('/dashboard/user-management/admin');
+            return redirect('/dashboard/user-management/admin')->with('success', $result->message);
         }else{
-            toast('Failed create user admin','error');
-            return redirect('/dashboard/user-management/admin/create');
+            return redirect()->back()->with('error', $result->message);
         }
     }
 
@@ -184,11 +182,9 @@ class AdminController extends Controller
             $result = $this->apiLib->generate('PUT','/api/admin/admin-update/'.$id);
 
         if(!empty($result->status)){
-            toast('Success update user admin','success');
-            return redirect('/dashboard/user-management/admin');
+            return redirect('/dashboard/user-management/admin')->with('success', $result->message);
         }else{
-            toast('Failed update user admin','error');
-            return redirect('/dashboard/user-management/admin/edit/'.$id);
+            return redirect()->back()->with('error', $result->message);
         }
     }
 
@@ -208,10 +204,10 @@ class AdminController extends Controller
         if(!empty($result->status))
         {
             $success = true;
-            $message = "User deleted successfully";
+            $message = $result->message;
         }else{
             $success = false;
-            $message = "Delete role filed";
+            $message = $result->message;
         }
 
         return response()->json(['success' => $success, 'message' => $message]);
