@@ -17,24 +17,25 @@
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
     <title>CoreUI Free Bootstrap Admin Template</title>
-    <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-    <link rel="manifest" href="../../assets/favicon/manifest.json">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ env('APP_URL', '') }}/assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ env('APP_URL', '') }}/assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ env('APP_URL', '') }}/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ env('APP_URL', '') }}/assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ env('APP_URL', '') }}/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="{{ env('APP_URL', '') }}/assets/favicon/manifest.json">
     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/datatables.min.css') }}"/>
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="{{ env('APP_URL', '') }}/assets/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <!-- Icons-->
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
@@ -58,10 +59,11 @@
       // Bootstrap ID
       gtag('config', 'UA-118965717-5');
     </script>
-    <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
-    
+       
     <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/sweetalertII.all.min.js') }}"></script>
   </head>
 
 
@@ -92,7 +94,30 @@
     <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     @yield('javascript')
-
+    
+    @if (Session()->has('success'))
+    <script>
+      const Toast = Swal.mixin({toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                              });
+                              
+      Toast.fire({icon: 'success',
+                  title: '{{session()->get('success')}}'})
+    </script>
+    @elseif(Session()->has('error'))
+    <script>
+      const Toast = Swal.mixin({toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                              });
+                              
+      Toast.fire({icon: 'error',
+                  title: '{{session()->get('error')}}'})
+    </script>
+    @endif
 
 
 

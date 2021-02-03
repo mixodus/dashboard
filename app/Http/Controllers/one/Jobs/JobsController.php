@@ -136,11 +136,9 @@ class JobsController extends Controller
         $this->apiLib->setParams($data);
         $result = $this->apiLib->generate('POST','/api/jobs/create');
         if(!empty($result->status)){
-            toast('Success create job','success');
-            return redirect('/dashboard/jobs');
+            return redirect('/dashboard/news-article')->with('error', $result->message);
         }else{
-            toast('Failed create job','error');
-            return redirect('/dashboard/jobs/create');
+            return redirect()->back()->with('error', $result->message);
         }
     }
 
@@ -273,11 +271,9 @@ class JobsController extends Controller
         $result = $this->apiLib->generate('PUT','/api/jobs/update/'.$id);
         
         if(!empty($result->status)){
-            toast('Success update job','success');
-            return redirect('/dashboard/jobs');
+            return redirect('/dashboard/jobs')->with('success', $result->message);
         }else{
-            toast('Failed update job','error');
-            return redirect('/dashboard/jobs/edit/'.$id);
+            return redirect()->back()->with('error', $result->message);
         }
     }
 
@@ -297,10 +293,10 @@ class JobsController extends Controller
         if(!empty($result->status))
         {
             $success = true;
-            $message = "Jobs deleted successfully";
+            $message = $result->message;
         }else{
             $success = false;
-            $message = "Delete jobs filled";
+            $message = $result->message;
         }
 
         return response()->json(['success' => $success, 'message' => $message]);

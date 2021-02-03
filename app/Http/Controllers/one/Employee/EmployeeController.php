@@ -94,7 +94,7 @@ class EmployeeController extends Controller
     {
         try {
             $token = $request->session()->get('token');
-            $put['data'] = ['token' => $token, 'byEmpoyee' => $id];
+            $put['data'] = ['token' => $token, 'byEmployee' => $id];
 
             $this->apiLib->setParams($put['data']);
             $result = $this->apiLib->generate('GET','/api/user-management/employee-show');
@@ -111,7 +111,8 @@ class EmployeeController extends Controller
             
             return view('one.employee.employeeUpdate', compact('data', 'date'));
         } catch (\Exception $e) {
-            return $this->services->response(404, $e->getMessage());
+            $err_messages = $e->getMessage(); 
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
 
@@ -164,11 +165,9 @@ class EmployeeController extends Controller
             $result = $this->apiLib->generate('PUT','/api/user-management/employee-update/'.$id);
 
         if(!empty($result->status)){
-            toast('Success update user admin','success');
-            return redirect('/dashboard/user-management/employee');
+            return redirect('/dashboard/user-management/employee')->with('success',$result->message);
         }else{
-            toast('Failed update user admin','error');
-            return redirect('/dashboard/user-management/employee/edit/'.$id);
+            return redirect()->back()->with('error', $result->message);
         }
     }
 
@@ -188,10 +187,10 @@ class EmployeeController extends Controller
         if(!empty($result->status))
         {
             $success = true;
-            $message = "Employee deleted successfully";
+            $message = $result->message;
         }else{
             $success = false;
-            $message = "Delete Employee filed";
+            $message = $result->message;
         }
 
         return response()->json(['success' => $success, 'message' => $message]);

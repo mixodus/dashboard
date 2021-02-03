@@ -64,10 +64,9 @@
                       <label><b>Confrime Password :</b></label>
                       <input class="form-control" name="confrim_password" type="password" placeholder="Confrim Password" required>
                       <br>
-                      <div class="row justify-content-center">
-                        <div class="col-2">
-                          <button type="submit" class="btn btn-md btn-primary">Submit</button>
-                        </div>
+                      <div class="card-footer">
+                        <button class="btn btn-sm btn-primary" type="submit"> Submit</button>
+                        <a href="{{ env('APP_URL', '').'/dashboard/user-management/admin' }}" class="btn btn-sm btn-danger" type="button"> Cancel</a>
                       </div>
                       </form>
                     </div>

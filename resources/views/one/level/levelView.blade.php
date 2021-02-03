@@ -3,12 +3,6 @@
 @section('content')
         <div class="container-fluid">
             <div class="fade-in">
-              @if ($message = Session::get('success'))
-              <div class="alert alert-success">
-                <button type="button" class="close" data-dismiss="alert">×</button> 
-                <strong>{{ $message }}</strong>
-              </div>
-              @endif
               <div class ="row">
                 <div class="col-sm-4">
                     <div class="card">
@@ -24,7 +18,7 @@
                           <label><h5>{{$data->fullname}}</h5></label>
                         </div>
                         <div class="row justify-content-center">
-                          <label>{{$data->level_name}}</label>
+                          <label>{{$data->level->level_name}}</label>
                         </div>     
                     </div>
                   </div>
@@ -38,7 +32,7 @@
                       <div class="row">
                         <div class="col-md-5">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
-                          <i class="cil-plus"></i> Create Role
+                          <i class="cil-plus"></i> Add Activity
                         </button>
                         </div>
                       </div>
@@ -63,6 +57,9 @@
                           @endforeach
                           </tbody>
                         </table>
+                      </div>
+                      <div class="card-footer">
+                        <a href="{{ env('APP_URL', '').'/dashboard/user-management/employee-level' }}" class="btn btn-sm btn-danger" type="button"> Cancel</a>
                       </div>
                   </div>
                 </div>
@@ -110,14 +107,6 @@
     <script src="{{ asset('js/Chart.min.js') }}"></script>
     <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
-    <script>
-      $(document).ready(function() {
-          $('#style_data').DataTable( {
-            "searching": false,
-            "ordering": false,
-          } );
-      } );
-    </script>
     <style>
       .c-avatar-img2 {
         width: 50%;

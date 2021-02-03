@@ -69,11 +69,9 @@ class LevelController extends Controller
         $this->apiLib->setParams($data);
         $result = $this->apiLib->generate('POST','/api/user-management/employee-level/create');
         if(!empty($result->status)){
-            toast('Success add activity point','success');
-            return redirect('/dashboard/user-management/employee-level/view/'.$request->employee_id);
+            return redirect()->back()->with('success', $result->message);
         }else{
-            toast('Failed add activity point','error');
-            return redirect('/dashboard/user-management/employee-level/view/'.$request->employee_id);
+            return redirect()->back()->with('success', $result->message);
         }
     }
 
@@ -95,7 +93,7 @@ class LevelController extends Controller
                 throw new \Exception("Failed get company");
             }
 
-            $data = $result->data;
+            $data = $result->data[0];
             $activity = $result->action;
 
             return view('one.level.levelView',compact('data', 'activity'));
