@@ -33,11 +33,12 @@ class ApiLibrary
 
     public function generate($action = '', $setEndPoint, $timeOut = 30){
         
-        $this->apiBaseUrl = env("API_URL", "");
+        $this->apiBaseUrl = env("API_URL");
+
         $action = strtoupper($action);
         
         $endpoint = $this->apiBaseUrl.$setEndPoint;
-        
+	        
         $body = "";
         if($action=="POST"){
             $query['data'] = !empty($this->params)? $this->params : [];
@@ -79,7 +80,7 @@ class ApiLibrary
             $check = (count($query['data']) > 1)? $this->params : [];
             $body = json_encode($check);
         }
-        
+       
         try {
             $client = new GuzzleClient([
                 'headers' => $headers

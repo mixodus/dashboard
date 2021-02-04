@@ -23,12 +23,7 @@
                         <form method="POST" action="{{ env('APP_URL', '').'/dashboard/user-management/employee/update/'.$data->user_id }}">
                           @csrf
                           @method('PUT')
-                            <div class="row">
-                              <div class="col-sm-6">
-                                <label><b>Photo :</b></label>
-                                <input id="file-input" type="file" name="profile_picture">
-                              </div>
-                            </div>
+                           
                             <div class="row">
                               <div class="col-sm-6">
                                 <label><b>Fullname :</b></label>

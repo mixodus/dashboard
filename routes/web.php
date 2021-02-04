@@ -57,13 +57,13 @@ Route::group(['middleware' => ['login.check']], function () {
                 Route::post('/event/register-status/{id}', 'one\Event\EventController@registerStatus');
 
                 Route::prefix('settings')->group(function () {
-                    Route::get('/roles', 'one\settings\RolesController@index');
-                    Route::get('/roles/view/{id}','one\settings\RolesController@show');
-                    Route::get('/roles/create','one\settings\RolesController@formcreate');
-                    Route::post('/roles/store','one\settings\RolesController@store');
-                    Route::get('/roles/edit/{id}','one\settings\RolesController@edit');
-                    Route::put('/roles/update/{id}','one\settings\RolesController@update');
-                    Route::get('/roles/delete/{id}','one\settings\RolesController@destroy');
+                    Route::get('/roles', 'one\Settings\RolesController@index');
+                    Route::get('/roles/view/{id}','one\Settings\RolesController@show');
+                    Route::get('/roles/create','one\Settings\RolesController@formcreate');
+                    Route::post('/roles/store','one\Settings\RolesController@store');
+                    Route::get('/roles/edit/{id}','one\Settings\RolesController@edit');
+                    Route::put('/roles/update/{id}','one\Settings\RolesController@update');
+                    Route::get('/roles/delete/{id}','one\Settings\RolesController@destroy');
                 });
 
                 Route::prefix('user-management')->group(function () {
