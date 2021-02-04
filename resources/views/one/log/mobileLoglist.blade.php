@@ -18,7 +18,7 @@
                             <th>version</th>
                             <th>Response Status Code</th>
                             <th>Response status</th>
-                            <th>Platform</th>
+                            <th>URI</th>
                             <th>IP Address</th>
                             <th>Created At</th>
                             <th></th>
@@ -33,7 +33,7 @@
                               <td>{{ $logs->version }}</td>
                               <td>{{ $logs->status_code }}</td>
                               <td>{{ ($logs->status_code == '200')? "Success" : "Failed" }}</td>
-                              <td>{{ $logs->request_header }}</td>
+                              <td>{{ $logs->uri }}</td>
                               <td>{{ $logs->ip_address }}</td>
                               <td>{{ $logs->created_at }}</td>
                               <td>
