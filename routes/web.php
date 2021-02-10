@@ -56,6 +56,11 @@ Route::group(['middleware' => ['login.check']], function () {
                 Route::get('/event/delete/{id}', 'one\Event\EventController@destroy');
                 Route::post('/event/register-status/{id}', 'one\Event\EventController@registerStatus');
 
+                 //hackathon Page
+                 Route::get('/hackathon', 'one\Event\EventController@Hackathon');
+                 Route::get('/hackathon/{id}', 'one\Event\EventController@Hackathonedit');
+                 Route::post('/event/update-hackathon/{id}', 'one\Event\EventController@updateHackathon');
+                 
                 Route::prefix('settings')->group(function () {
                     Route::get('/roles', 'one\Settings\RolesController@index');
                     Route::get('/roles/view/{id}','one\Settings\RolesController@show');

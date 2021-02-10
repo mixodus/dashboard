@@ -22,7 +22,7 @@
                     <div class="card-body">
                       <div class="row">
                         <div class="col-sm-6">
-                          <img src="http://localhost/new-one-dashboard/public/assets/image/no_image.png" class="img-thumbnail" width="150" height="150" id="preview" />
+                          <img src="" class="img-thumbnail" width="150" height="150" id="preview" />
                         </div>
                         <div class="col-sm-6">
                         </div>
@@ -60,6 +60,17 @@
                         <div class="col-sm-6">
                           <label><b>Event Date :</b></label>
                           <input class="form-control" name="event_date" type="date">
+                        </div>
+                      </div>
+                      </br>
+                      <div class="row">
+                      <div class="col-sm-6" style="display:none">
+                          <label><b>Event Place :</b></label>
+                          <input class="form-control" name="event_place" type="text" placeholder="Input palace">
+                        </div>
+                        <div class="col-sm-6">
+                          <label><b>Event Speaker :</b></label>
+                          <input class="form-control" name="event_speaker" type="text" placeholder="Input speaker">
                         </div>
                       </div>
                       </br>
