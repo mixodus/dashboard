@@ -25,20 +25,10 @@
                         </div>
                       </div>
                       </br>
-
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <ul class="list-group">
-                            <li class="list-group"><span class="data-event">Date : {{ date('d F Y',strtotime($data_event->event_date)) }}</span></li>
-                            <li class="list-group"><span class="data-event">Time : {{ $data_event->event_time }}</span></li>
-                            <li class="list-group"><span class="data-event">Location : {{ $data_event->event_place }}</span></li>
-                          </ul>
-                        </div>
-                      </div>
                       <div class="row">
                         <div class="col-sm-12">
                           <div class="text-center">
-                            <img src="{{$data_event->event_banner_url}}" class="img-fluid images" alt="Responsive image">
+                            <img src="{{$data_event->event_banner_url}}" class="img-fluid images" alt="Responsive image" style="width:250px;height:400px;">
                           </div>
                         </div>
                       </div>
@@ -49,12 +39,15 @@
                         </div>
                       </div>
 
-                      <div class="entry-meta post-atribute mb-3 small text-muted">
-            
-                        <span class="byline"><span class="fa fa-user"></span> Speaker by :<span class="author vcard" style="color: #66ff33"> <b>{{ $data_event->event_speaker }} </b></span></span>
-                        
-                  
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <ul class="list-group">
+                          <li class="list-group"><span class="data-event">Date : {{ date('d F Y',strtotime($data_event->event_date)) }}</span></li>
+                          <!-- <li class="list-group"><span class="data-event">Time : {{ $data_event->event_time }}</span></li>
+                          <li class="list-group"><span class="data-event">Location : {{ $data_event->event_place }}</span></li> -->
+                        </ul>
                       </div>
+                    </div>
                     </div>
                 </div>
                 <div class="row">

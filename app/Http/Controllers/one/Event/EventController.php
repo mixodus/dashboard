@@ -82,7 +82,7 @@ class EventController extends Controller
             'event_type_id' => "required|integer",
             'event_title' => "required",
             'event_date' => "required||date_format:Y-m-d",
-            'event_time' => "required|date_format:H:i",
+            'event_time' => "date_format:H:i" ?? "00:00",
             'event_note' => "required",
             'event_banner' => "required|image|mimes:jpg,png,jpeg|max:5000",
             'event_longitude' => ['regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/', 'nullable'],
@@ -92,12 +92,35 @@ class EventController extends Controller
         $multipart_data = array();
         $multipart_data['event_banner']    = $request->event_banner;
 
+        //validate data that not exist
+        $request['event_time'] = $request['event_time'] ?? "00:00";
+
         foreach ($multipart_data as $key => $file) {
             $data[] = [
                 'name'      => $key,
                 'contents'  => fopen($file->getPathname(), 'r'),
                 'filename'  => $file->getClientOriginalName()
             ];
+        }
+        $rewards = array();
+        if(count($request->reward_name)>0){
+            for ($i=0; $i < count($request->reward_name); $i++) { 
+                $rewards[] = [
+                    'reward_name' => $request->reward_name,
+                    'reward_value' => $request->reward_value,
+                    'reward_icon' => 'icon',
+                ];
+            }
+        }
+        $rewards = array();
+        if(count($request->schedule_name)>0){
+            for ($i=0; $i < count($request->schedule_name); $i++) { 
+                $data['name']['name'][] = $request->schedule_name;
+                $data['name']['desc'][] = $request->schedule_desc;
+                $data['name']['additional_information'][] = $request->schedule_additional;
+                $data['name']['schedule_start'][] = $request->schedule_start;
+                $data['name']['schedule_end'][] = $request->schedule_end;
+            }
         }
 
         $data[] = [
@@ -144,7 +167,19 @@ class EventController extends Controller
             'name' => 'event_speaker',
             'contents' => $request->event_speaker
         ];
-
+        
+        $data[] = [
+            'name' => 'event_requirement',
+            'contents' => $request->event_requirement
+        ];
+        $data[] = [
+            'name' => 'event_additional_information',
+            'contents' => $request->event_additional_information
+        ];
+        $data[] = [
+            'name' => 'event_prize',
+            'contents' => json_encode($rewards)
+        ];
         $this->apiLib->setToken($token);
         $this->apiLib->setParams($data);
         $result = $this->apiLib->generateUpload('POST', '/api/event-create');
@@ -238,7 +273,7 @@ class EventController extends Controller
             'event_type_id' => "required|integer",
             'event_title' => "required",
             'event_date' => "required||date_format:Y-m-d",
-            'event_time' => "required|date_format:H:i",
+            'event_time' => "date_format:H:i",
             'event_note' => "required",
             'event_banner' => "image|mimes:jpg,png,jpeg|max:5000",
             'event_longitude' => ['regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/', 'nullable'],
@@ -247,6 +282,8 @@ class EventController extends Controller
 
         $multipart_data = array();
         $multipart_data['event_banner']    = $request->event_banner;
+        $request['event_time'] = $request['event_time'] ?? "00:00";
+        
         
         if (!empty($request->event_banner)) {
             foreach ($multipart_data as $key => $file) {
@@ -255,6 +292,26 @@ class EventController extends Controller
                     'contents'  => fopen($file->getPathname(), 'r'),
                     'filename'  => $file->getClientOriginalName()
                 ];
+            }
+        }
+        
+        $rewards = array();
+        if(count($request->reward_name)>0){
+            for ($i=0; $i < count($request->reward_name); $i++) { 
+                $rewards[] = [
+                    'reward_name' => $request->reward_name,
+                    'reward_value' => $request->reward_value,
+                    'reward_icon' => 'icon',
+                ];
+            }
+        }
+        if(count($request->schedule_name)>0){
+            for ($i=0; $i < count($request->schedule_name); $i++) { 
+                $data['name']['name'][] = $request->schedule_name;
+                $data['name']['desc'][] = $request->schedule_desc;
+                $data['name']['additional_information'][] = $request->schedule_additional;
+                $data['name']['schedule_start'][] = $request->schedule_start;
+                $data['name']['schedule_end'][] = $request->schedule_end;
             }
         }
 
@@ -302,6 +359,19 @@ class EventController extends Controller
             'name' => 'event_speaker',
             'contents' => $request->event_speaker
         ];
+        $data[] = [
+            'name' => 'event_requirement',
+            'contents' => $request->event_requirement
+        ];
+        $data[] = [
+            'name' => 'event_additional_information',
+            'contents' => $request->event_additional_information
+        ];
+        $data[] = [
+            'name' => 'event_prize',
+            'contents' => json_encode($rewards)
+        ];
+        dd($data);
 
         $this->apiLib->setToken($token);
         $this->apiLib->setParams($data);
@@ -314,6 +384,50 @@ class EventController extends Controller
         }
     }
 
+    public function updateHackathon(Request $request, $id)
+    {
+        $token = $request->session()->get('token','');
+        $this->setToken($token);
+        $general_data = $request->except(['reward_icon','_token','event_prize','reward_name','reward_value'
+        ,'schedule_name','schedule_desc','schedule_additional','schedule_start','schedule_end','schedule_link']);
+        $multipart_data = array();
+        if($request->reward_icon){
+            $img = $request->reward_icon;
+            foreach($img as $key)
+            {
+                if ($key != null) {
+                    $multipart_data['icon'][] = $key;
+                }
+            }
+        }
+        $dataReward= array();
+        if(count($request['reward_name'])){
+            for ($i=0; $i < count($request->reward_name); $i++) { 
+                if($request['reward_name'][$i]!=null){
+                    $rewards['name'] = $request['reward_name'][$i];
+                    $rewards['reward_value'] = $request['reward_value'][$i];
+                    $dataReward[]=$rewards;
+                }
+            }
+        }
+        $general_data['is_road_map'] = true;
+        for ($i=0; $i < count($request->schedule_name); $i++) { 
+            $general_data['schedule_start'][] = $request['schedule_start'][$i];
+            $general_data['schedule_end'][] = $request['schedule_end'][$i];
+            $general_data['icon'][] = '';
+            $general_data['name'][] = $request['schedule_name'][$i];
+            $general_data['desc'][] = $request['schedule_desc'][$i];
+            $general_data['link'][] = $request['schedule_link'][$i];
+            $general_data['additional_information'][] = $request['schedule_additional'][$i];
+        }
+        $general_data['event_prize'] = json_encode($dataReward);
+        $response = $this->MULTIPART(env("API_URL").'/api/event-update?byEventid='. $id,$general_data, $multipart_data);
+        if ($response['status']==true) {
+            return redirect('/dashboard/hackathon')->with('success', $response['message']);
+        } else {
+            return redirect()->back()->with('error', $respons['message']);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -358,6 +472,31 @@ class EventController extends Controller
             return redirect()->back()->with('success', $result->message);
         }else{
             return redirect()->back()->with('error', $result->message);
+        }
+    }
+
+    public function hackathon(Request $request)
+    {
+        $token = $request->session()->get('token');
+        $put['data'] = ['token' => $token];
+        $this->apiLib->setParams($put['data']);
+        $result = $this->apiLib->generate('GET', '/api/dashboard/hacktown');
+        $company = $this->apiLib->generate('GET', '/api/company');
+        if (!$company) {
+            throw new \Exception("Failed get company");
+        }
+        $company = $company->data;
+        if (!empty($result->status)) {
+            $data = $result->data;
+            $prize = null;
+            if(!empty($data->event_prize)){
+                $prize = json_decode($data->event_prize,true);
+            }
+            $action = $result->action->original;
+            return view('one.event.hackathon.view', compact('data', 'action', 'company','prize'));
+        } else {
+            $err_messages = "Server Error";
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
 }

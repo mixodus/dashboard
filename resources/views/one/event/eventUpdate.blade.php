@@ -63,7 +63,7 @@
                         </div>
                       </div>
                       </br>
-                      <div class="row">
+                      <div class="row" style ="display:none">
                       <div class="col-sm-6">
                           <label><b>Event Time :</b></label>
                           <input class="form-control" name="event_time" type="time" placeholder="Input time" value="{{$data_event->event_time}}">
@@ -73,8 +73,7 @@
                           <input class="form-control" name="event_charge" type="text" placeholder="Input charge" value="{{$data_event->event_charge}}">
                         </div>
                       </div>
-                      </br>
-                      <div class="row">
+                      <div class="row" style ="display:none">
                       <div class="col-sm-6">
                           <label><b>Event Longtitude :</b></label>
                           <input class="form-control" name="event_longitude" type="text" placeholder="Input longtitude" value="{{$data_event->event_longitude}}">
@@ -84,18 +83,6 @@
                           <input class="form-control" name="event_latitude" type="text" placeholder="Input latitude" value="{{$data_event->event_latitude}}">
                         </div>
                       </div>
-                      </br>
-                      <div class="row">
-                      <div class="col-sm-6">
-                          <label><b>Event Palace :</b></label>
-                          <input class="form-control" name="event_place" type="text" placeholder="Input palace" value="{{$data_event->event_place}}">
-                        </div>
-                        <div class="col-sm-6">
-                          <label><b>Event Speaker :</b></label>
-                          <input class="form-control" name="event_speaker" type="text" placeholder="Input speaker" value="{{$data_event->event_speaker}}">
-                        </div>
-                      </div>
-                      </br>
                       <div class="row">
                       <div class="col-sm-6">
                           <label><b>Company :</b></label>
@@ -112,6 +99,17 @@
                         <div class="col-sm-12">
                           <label><b>Event Description :</b></label>
                           <textarea class="form-control" name="event_note" rows="5" placeholder="Typing event description.." id="summary-ckeditor">{{$data_event->event_note}}</textarea>
+                        </div>
+                      </div>
+                      
+                      <div class="row" style ="display:none">
+                      <div class="col-sm-6">
+                          <label><b>Event Palace :</b></label>
+                          <input class="form-control" name="event_place" type="text" placeholder="Input palace" value="{{$data_event->event_place}}">
+                        </div>
+                        <div class="col-sm-6">
+                          <label><b>Event Speaker :</b></label>
+                          <input class="form-control" name="event_speaker" type="text" placeholder="Input speaker" value="{{$data_event->event_speaker}}">
                         </div>
                       </div>
                       <div class="card-footer">
