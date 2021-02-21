@@ -13,7 +13,7 @@
                     
                     <div class="form-group row">
                       <div class="col-sm-6">
-                        <img src="{{$data->event_banner_url}}" class="img-thumbnail" width="150" height="150" id="preview" />
+                        <img src="{{$data->event_banner_url}}" class="img-thumbnail" width="200" height="200" id="preview" />
                       </div>
                         <div class="col-sm-6">
                         </div>
@@ -74,12 +74,6 @@
                             <textarea class="form-control" name="event_additional_information" rows="5" placeholder="Typing event description.." id="summary-ckeditor3">{{$data->event_additional_information}}</textarea>                    
                         </div>
                     </div>
-                    <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="textarea-input">Terms and Condition</label>
-                        <div class="col-md-9">
-                            <textarea class="form-control" name="event_terms_coditions" rows="5" placeholder="Typing .." id="summary-ckeditor4">{{$data->event_terms_coditions}}</textarea>                    
-                        </div>
-                    </div>
                     <!-- Reward Section -->
                     @if($data->event_prize  != null)
                     @foreach($data->event_prize as $key)
@@ -87,7 +81,7 @@
                     <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="textarea-input">Reward Name</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="text-input" type="text" name="reward_name[]" value="{{$key->reward_name}}">
+                            <input class="form-control" id="text-input" type="text" name="reward_name[]" value="{{$key->name}}">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -100,19 +94,24 @@
                     <label class="col-md-3 col-form-label" for="textarea-input">Reward Icon</label>
                         <div class="col-md-9"><br>
                         
-                        <img src="{{$key->reward_icon_url}}" width="50px" height="50px"><br><br>
+                        <img src="{{$key->reward_icon}}" width="50px" height="50px"><br><br>
                         <input type="text" class="form-control" placeholder="Browse.." id="text_image{{$key->reward_icon}}" value="{{$key->reward_icon}}">
-                        <input type="file" class="inputFile" name="reward_icon[]" >
+                        <input type="file" class="inputFile2" name="reward_icon[]" >
                         <input type="hidden" name="reward_icon[]" value="{{$key->reward_icon}}">
                         </div>
                     </div>
                     @endforeach
                     @endif
+                    <!-- <div class="form-group row" style="display:none">
+                    <label class="col-md-3 col-form-label" for="textarea-input"></label>
+                        <div class="col-md-9">
+                            <button type="button" id="addRow" class="btn btn-sm btn-info" row="2">Add Rewards</button>
+                            <button type="button"  class="btn mnc btn-sm btn-danger" id="cancel" style=" display: none;">&nbsp;Cancel</button>
+                        </div>
+                    </div> -->
                      <!-- Timeline Section -->
                     <div class="card-header"><strong>TimeLine</strong></div><br><br>
                     @foreach($data->event_schedules as $raw)
-                    <input  type="text" name="schedule_id[]" value="{{$raw->schedule_id}}" style="display:none">
-                        
                     <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="textarea-input">Title</label>
                         <div class="col-md-9">
@@ -172,18 +171,65 @@
                     <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="textarea-input">Shedule Icon Pending</label>
                         <div class="col-md-9"><br>
-                        <img src="{{$raw->icon_schedule_pending}}" width="70px" height="70px"><br><br>
-                        <input type="text" class="form-control" placeholder="Browse.." id="text_image{{$raw->icon}}" value="{{$raw->icon}}">
+                        <img src="{{$raw->icon_schedule_default}}" width="70px" height="70px"><br><br>
+                        <input type="text" class="form-control" placeholder="Browse.." id="text_image{{$raw->icon}}" value="" style="display:none">
                         <input type="file" class="inputFile2" name="icon_schedule_pending[]" >
                         <input type="hidden" name="icon_schedule_pending[]" value="{{$raw->icon}}">
                         </div>
                     </div>
                     @endforeach
+                    <!-- <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="textarea-input"></label>
+                        <div class="col-md-9">
+                            <button type="button" id="addRow2" class="btn btn-sm btn-info" raw="2">Add More Schedule</button>
+                            <button type="button"  class="btn mnc btn-sm btn-danger" id="cancel2" style=" display: none;">&nbsp;Cancel</button>
+                        </div>
+                    </div> -->
+                    <?php for($i=0; $i<10; $i++){ ?>
+                    <div class="raw<?php echo $i ?>" style="display:none">
+                    
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="textarea-input">Title</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="text-input" type="text" name="schedule_name[]">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="textarea-input">Descriptions</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" name="schedule_desc[]" rows="3" ></textarea>                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="textarea-input">Additional Information</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" name="schedule_additional[]" rows="3" ></textarea>                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="textarea-input">Additional Link</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="text-input" type="text" name="schedule_link[]">                 
+                        </div>
+                    </div> 
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="date-input">Schedule Start Date</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="date-input" type="date" name="schedule_start[]">  
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="date-input">Schedule End Date</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="date-input" type="date" name="schedule_end[]">  
+                        </div>
+                    </div>
+                    </div>
+                    <?php }?>
                     
                     <div class="card-footer">
                     <button class="btn btn-sm btn-primary" type="submit"> Submit</button>
                     <button class="btn btn-sm btn-danger" type="reset"> Reset</button>
-                    <a onclick="cancelForm()" class="btn btn-sm btn-warning" >Cancel</a>
                     </div>
 
                 </form>
@@ -197,7 +243,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                           <div class="text-center">
-                            <img src="{{$data->event_banner_url}}" class="img-fluid images" alt="Responsive image" style="width:200px;height:200px;">
+                            <img src="{{$data->event_banner_url}}" class="img-fluid images" alt="Responsive image" 
+                            style="width:150;height:100;">
                           </div>
                         </div>
                       </div>
@@ -217,104 +264,15 @@
                             <dt class="col-sm-3">Additional Information</dt>
                             <dd class="col-sm-9">{{$data->event_additional_information}}</dd>
 
-                            <dt class="col-sm-3">Terms and Conditions</dt>
-                            <dd class="col-sm-9">{{$data->event_terms_coditions}}</dd>
+                            <dt class="col-sm-3">Additional Information</dt>
+                            <dd class="col-sm-9">{{$data->event_additional_information}}</dd>
 
                             
                         </dl>
                     </div>             
-                    <div class="card-footer">
-                        <button onclick="showHiddenForm()" class="btn btn-sm btn-warning" >Edit Data</button>
-                        <a class="btn btn-sm btn-info" href="{{ env('APP_URL', '').'/dashboard/hackathon/participant/'.$data->event_id }}"> Participants</a>
-                    </div>
-                    
-                <div class="row">
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header"><i class="fa fa-align-justify"></i>Participant</div>
-                    <div class="card-body">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Participant Data</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Participant Timeline Status</a>
-                        </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <!-- Participant Data -->
-                                <br><br>
-                                <h4> Participant Data </h4>
-                                <br>
-                                <table class="table table-responsive-sm stripe" id="style_data">
-                                    <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Email</th>
-                                        <th>Name</th>
-                                        <th>University</th>
-                                        <th>Major</th>
-                                        <th>Semester</th>
-                                        <th>Files</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($participant as $index => $participant)
-                                        <tr>
-                                        <td>{{ $index+1 }}</td>
-                                        <td>{{ $participant->email }}</td>
-                                        <td>{{ $participant->fullname }}</td>
-                                        <td>{{ $participant->university }}</td>
-                                        <td>{{ $participant->major }}</td>
-                                        <td>{{ $participant->semester }}</td>
-                                        <td>
-                                        <a href="{{ $participant->idcard_file }}" target="_blank">ID Card </a>|
-                                        <a href="{{ $participant->studentcard_file }}" target="_blank">Student Card </a>|
-                                        <a href="{{ $participant->transcripts_file }}" target="_blank">Transcripts Card </a>
-                                        </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <br><br>
-                                <h4> Participant Timeline Status</h4>
-                                <br>
-                                <table class="table table-responsive-sm stripe" id="style_data">
-                                    <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        @foreach($data->eventSchedules as $key)
-                                        <th>{{$key->name}}</th>
-                                        @endforeach
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($participant_status as $index => $participant)
-                                        <tr>
-                                        <td>{{ $index+1 }}</td>
-                                        <td>{{ $participant->fullname }}</td>
-                                        @foreach($participant->schedule_status as $key)
-                                        <th>
-                                        <label class="c-switch c-switch-label c-switch-success">
-                                        <input type="checkbox" class="c-switch-input" @if($key->status == "Passed") checked @endif>
-                                        <span class="c-switch-slider" data-checked="Pass" data-unchecked="Fail"></span>
-                                        </label>
-                                        
-                                        </label>
-                                        </th>
-                                        @endforeach
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer"></div>
+                <div class="card-footer">
+                    <button onclick="showHiddenForm()" class="btn btn-sm btn-warning" >Edit Data</button>
+                    <a class="btn btn-sm btn-info" href="{{ env('APP_URL', '').'/dashboard/hackathon/participant/'.$data->event_id }}"> Participants</a>
                 </div>
             </div>
         </div>
@@ -331,22 +289,12 @@
     </style>
 <script>
     function showHiddenForm() {
-        var x = document.getElementById("formEdit");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            x.style.display = "none";
-        }
+    var x = document.getElementById("formEdit");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
     }
-    function cancelForm() {
-        var x = document.getElementById("formEdit");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        } else {
-            x.style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
     }
     $(document).ready(function(){
 	xx=1;
@@ -454,6 +402,5 @@
       CKEDITOR.replace( 'summary-ckeditor' );
       CKEDITOR.replace( 'summary-ckeditor2' );
       CKEDITOR.replace( 'summary-ckeditor3' );
-      CKEDITOR.replace( 'summary-ckeditor4' );
     </script>
 @endsection

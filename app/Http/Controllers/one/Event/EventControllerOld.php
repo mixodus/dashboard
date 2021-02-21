@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Library\One\ApiLibrary;
 
-class EventController extends Controller
+class EventController_Old extends Controller
 {
     public function __construct()
     {
@@ -371,7 +371,6 @@ class EventController extends Controller
             'name' => 'event_prize',
             'contents' => json_encode($rewards)
         ];
-        
 
         $this->apiLib->setToken($token);
         $this->apiLib->setParams($data);
@@ -414,7 +413,7 @@ class EventController extends Controller
             {
                 if(file_exists($key)) {
                     if ($key != null) {
-                        $general_data['icon_schedule_default'][] = $key;
+                        $multipart_data['icon_schedule_default'][] = $key;
                         
                     }
                 }else{
@@ -428,7 +427,7 @@ class EventController extends Controller
             {
                 if(file_exists($key)) {
                     if ($key != null) {
-                        $general_data['icon_schedule_failed'][] = $key;
+                        $multipart_data['icon_schedule_failed'][] = $key;
                     }
                 }else{
                     $general_data['icon_schedule_failed'][] = $key;
@@ -441,7 +440,7 @@ class EventController extends Controller
             {
                 if(file_exists($key)) {
                     if ($key != null) {
-                        $general_data['icon_schedule_pending'][] = $key;
+                        $multipart_data['icon_schedule_pending'][] = $key;
                     }
                 }else{
                     $general_data['icon_schedule_pending'][] = $key;
@@ -466,8 +465,10 @@ class EventController extends Controller
             $general_data['desc'][] = $request['schedule_desc'][$i];
             $general_data['link'][] = $request['schedule_link'][$i];
             $general_data['additional_information'][] = $request['schedule_additional'][$i];
-        }
-        $response = $this->MULTIPARTV2(env("API_URL").'/api/event-update?byEventid='. $id,$general_data);
+        }   
+    }   
+        $response = $this->MULTIPART(env("API_URL").'/api/event-update?byEventid='. $id,$general_data, $multipart_data);
+        dd($response);
         if ($response['status']==true) {
             return redirect('/dashboard/hackathon')->with('success', $response['message']);
         } else {
@@ -528,17 +529,14 @@ class EventController extends Controller
         $this->apiLib->setParams($put['data']);
         $result = $this->apiLib->generate('GET', '/api/dashboard/hacktown');
         $company = $this->apiLib->generate('GET', '/api/company');
-        $participant = $this->apiLib->generate('GET', '/api/dashboard/hacktown/participant?event_id=22');
         if (!$company) {
             throw new \Exception("Failed get company");
         }
         $company = $company->data;
-        $participant = $participant->data;
-        $participant_status = $participant;
         if (!empty($result->status)) {
             $data = $result->data;
             $action = $result->action->original;
-            return view('one.event.hackathon.view', compact('data', 'action', 'company','participant','participant_status'));
+            return view('one.event.hackathon.view', compact('data', 'action', 'company'));
         } else {
             $err_messages = "Server Error";
             return view('one.errors.errors', compact('err_messages'));

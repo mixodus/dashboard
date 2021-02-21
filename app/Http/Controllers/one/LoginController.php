@@ -30,10 +30,8 @@ class LoginController extends Controller {
             'username' => $request->get('email'),
             'password' => $request->get('password'),
         ];
-
         $this->apiLib->setParams($put['data']);
         $result = $this->apiLib->generate('POST','/admin/login');
-    
         if(!empty($result->status)){
 
             session(['token'=> $result->data->token]);

@@ -11,7 +11,7 @@
                 <h1>Login</h1>
                 <p class="text-muted">Sign In to your account</p>
                 <form method="POST" action="{{ route('post.login') }}">
-                    @csrf
+                   @csrf <!-- {{ csrf_field() }} -->
                     <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
