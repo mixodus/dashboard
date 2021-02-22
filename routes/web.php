@@ -60,6 +60,7 @@ Route::group(['middleware' => ['login.check']], function () {
                  Route::get('/hackathon', 'one\Event\EventController@Hackathon');
                  Route::get('/hackathon/{id}', 'one\Event\EventController@Hackathonedit');
                  Route::post('/event/update-hackathon/{id}', 'one\Event\EventController@updateHackathon');
+                 Route::get('/hackathon/update-status/{status}/{event_id}/{schedule_id}/{user_id}', 'one\Event\EventController@updateStatusParticipantHackathon');
                  
                 Route::prefix('settings')->group(function () {
                     Route::get('/roles', 'one\Settings\RolesController@index');

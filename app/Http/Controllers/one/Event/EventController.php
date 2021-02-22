@@ -467,7 +467,7 @@ class EventController extends Controller
             $general_data['link'][] = $request['schedule_link'][$i];
             $general_data['additional_information'][] = $request['schedule_additional'][$i];
         }
-        $response = $this->MULTIPARTV2(env("API_URL").'/api/event-update?byEventid='. $id,$general_data);
+        $response = $this->MULTIPART(env("API_URL").'/api/event-update?byEventid='. $id,$general_data,$multipart_data);
         if ($response['status']==true) {
             return redirect('/dashboard/hackathon')->with('success', $response['message']);
         } else {
@@ -542,6 +542,26 @@ class EventController extends Controller
         } else {
             $err_messages = "Server Error";
             return view('one.errors.errors', compact('err_messages'));
+        }
+    }
+    public function updateStatusParticipantHackathon(Request $request,$status,$event_id,$schedule_id, $user_id)
+    {
+        $token = $request->session()->get('token');
+        $data = [
+            'event_id' => $event_id,
+            'employee_id' => $user_id,
+            'schedule_id' => $schedule_id,
+            'status' => $status,
+            'token' => $token
+            ];
+
+        $this->apiLib->setParams($data);
+        $result = $this->apiLib->generate('POST','/api/dashboard/hacktown/participant/update-status');
+        
+        if(!empty($result->status)){
+            return redirect()->back()->with('success', $result->message);
+        }else{
+            return redirect()->back()->with('error', $result->message);
         }
     }
 }

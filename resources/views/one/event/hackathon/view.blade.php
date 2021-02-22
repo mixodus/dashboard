@@ -87,7 +87,7 @@
                     <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="textarea-input">Reward Name</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="text-input" type="text" name="reward_name[]" value="{{$key->reward_name}}">
+                            <input class="form-control" id="text-input" type="text" name="reward_name[]" value="{{$key->name}}">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -96,7 +96,7 @@
                             <input class="form-control" id="text-input" type="text" name="reward_value[]" value="{{$key->reward_value}}">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" style="display:none">
                     <label class="col-md-3 col-form-label" for="textarea-input">Reward Icon</label>
                         <div class="col-md-9"><br>
                         
@@ -150,7 +150,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group row">
+                    <div class="form-group row" style="display:none">
                     <label class="col-md-3 col-form-label" for="textarea-input">Shedule Icon Success</label>
                         <div class="col-md-9"><br>
                         <img src="{{$raw->icon_schedule_default}}" width="70px" height="70px"><br><br>
@@ -160,16 +160,16 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" style="display:none">
                     <label class="col-md-3 col-form-label" for="textarea-input">Shedule Icon Failed</label>
-                        <div class="col-md-9"><br>
+                        <div class="col-md-9"><br> 
                         <img src="{{$raw->icon_schedule_failed}}" width="70px" height="70px"><br><br>
                         <input type="text" class="form-control" placeholder="Browse.." id="text_image{{$raw->icon}}" value="{{$raw->icon}}">
                         <input type="file" class="inputFile2" name="icon_schedule_failed[]" >
                         <input type="hidden" name="icon_schedule_failed[]" value="{{$raw->icon}}">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" style="display:none">
                     <label class="col-md-3 col-form-label" for="textarea-input">Shedule Icon Pending</label>
                         <div class="col-md-9"><br>
                         <img src="{{$raw->icon_schedule_pending}}" width="70px" height="70px"><br><br>
@@ -209,23 +209,22 @@
                             <dd class="col-sm-9">{{$data->event_date}}</dd>
 
                             <dt class="col-sm-3">Description</dt>
-                            <dd class="col-sm-9">{{$data->event_note}}</dd>
+                            <dd class="col-sm-9">{!!$data->event_note!!}</dd>
 
                             <dt class="col-sm-3">Requirement</dt>
-                            <dd class="col-sm-9">{{$data->event_requirement}}</dd>
+                            <dd class="col-sm-9">{!!$data->event_requirement!!}</dd>
 
                             <dt class="col-sm-3">Additional Information</dt>
-                            <dd class="col-sm-9">{{$data->event_additional_information}}</dd>
+                            <dd class="col-sm-9">{!!$data->event_additional_information!!}</dd>
 
                             <dt class="col-sm-3">Terms and Conditions</dt>
-                            <dd class="col-sm-9">{{$data->event_terms_coditions}}</dd>
+                            <dd class="col-sm-9">{!!$data->event_terms_coditions!!}</dd>
 
                             
                         </dl>
                     </div>             
                     <div class="card-footer">
                         <button onclick="showHiddenForm()" class="btn btn-sm btn-warning" >Edit Data</button>
-                        <a class="btn btn-sm btn-info" href="{{ env('APP_URL', '').'/dashboard/hackathon/participant/'.$data->event_id }}"> Participants</a>
                     </div>
                     
                 <div class="row">
@@ -299,12 +298,23 @@
                                         <td>{{ $participant->fullname }}</td>
                                         @foreach($participant->schedule_status as $key)
                                         <th>
-                                        <label class="c-switch c-switch-label c-switch-success">
-                                        <input type="checkbox" class="c-switch-input" @if($key->status == "Passed") checked @endif>
-                                        <span class="c-switch-slider" data-checked="Pass" data-unchecked="Fail"></span>
-                                        </label>
-                                        
-                                        </label>
+                                        @if($key->status =="Failed")
+                                        <p style="color:red">{{ $key->status }}</p>
+                                        @elseif($key->status =="Passed")
+                                        <p style="color:green">{{ $key->status }}</p>
+                                        @else
+                                        <p>{{ $key->status }}</p>
+                                        @endif
+                                        <div class="dropdown">
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                                                Update Status
+                                            </a>
+
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="{{ env('APP_URL', '').'/dashboard/hackathon/update-status/Passed/'.$data->event_id.'/'.$key->schedule_id.'/'.$key->employee_id }}">Success</a>
+                                                <a class="dropdown-item" href="{{ env('APP_URL', '').'/dashboard/hackathon/update-status/Failed/'.$data->event_id.'/'.$key->schedule_id.'/'.$key->employee_id }}">Failed</a>
+                                            </div>
+                                            </div>
                                         </th>
                                         @endforeach
                                         </tr>
