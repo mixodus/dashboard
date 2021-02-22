@@ -75,7 +75,52 @@ class Controller extends BaseController
                 }
             }
         }
-        
+        $client = new Client();
+        // $boundary = 'my_custom_boundary';
+        return json_decode($client->POST($url,[
+            'headers' =>  [
+                'Accept' => 'application/json',
+                // 'Content-Type' => 'multipart/form-data; boundary='.$boundary,
+                'X-Api-Key' => env('API_KEY'),
+                'X-Token'  => $this->token
+            ],
+            'multipart' => $data,
+            $timeout = ['connection_timeout' => 600,'timeout'=> 600]
+        ])->getBody(),true);
+    }
+    protected function MULTIPARTV2($url,$general_data){
+        $data = [];
+        foreach($general_data as $key => $item){
+            if (is_array($item)) {
+                    foreach ($item as $row) {
+                        if(is_file($row)){
+                        $data[] = [
+                            'name'      => $key.'[]',
+                            'contents'  => fopen($row->getPathname(),'r'),
+                            'filename'  => $row->getClientOriginalName()
+                        ];
+                        }else{
+                            $data[] = [
+                                'name'      => $key.'[]',
+                                'contents'  => $row
+                            ];
+                        }
+                    }
+            }else{
+                if(is_file($item)){
+                    $data[] = [
+                        'name'      => $key,
+                        'contents'  => fopen($item->getPathname(),'r'),
+                        'filename'  => $item->getClientOriginalName()
+                    ];
+                }else{
+                    $data[] = [
+                        'name'      => $key,
+                        'contents'  => $item
+                    ];
+                }
+            }
+        }
         $client = new Client();
         // $boundary = 'my_custom_boundary';
         return json_decode($client->POST($url,[
