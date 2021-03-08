@@ -103,25 +103,25 @@ class EventController extends Controller
             ];
         }
         $rewards = array();
-        if(count($request->reward_name)>0){
-            for ($i=0; $i < count($request->reward_name); $i++) { 
-                $rewards[] = [
-                    'reward_name' => $request->reward_name,
-                    'reward_value' => $request->reward_value,
-                    'reward_icon' => 'icon',
-                ];
-            }
-        }
-        $rewards = array();
-        if(count($request->schedule_name)>0){
-            for ($i=0; $i < count($request->schedule_name); $i++) { 
-                $data['name']['name'][] = $request->schedule_name;
-                $data['name']['desc'][] = $request->schedule_desc;
-                $data['name']['additional_information'][] = $request->schedule_additional;
-                $data['name']['schedule_start'][] = $request->schedule_start;
-                $data['name']['schedule_end'][] = $request->schedule_end;
-            }
-        }
+        // if(count($request->reward_name)>0){
+        //     for ($i=0; $i < count($request->reward_name); $i++) { 
+        //         $rewards[] = [
+        //             'reward_name' => $request->reward_name,
+        //             'reward_value' => $request->reward_value,
+        //             'reward_icon' => 'icon',
+        //         ];
+        //     }
+        // }
+        // $rewards = array();
+        // if(count($request->schedule_name)>0){
+        //     for ($i=0; $i < count($request->schedule_name); $i++) { 
+        //         $data['name']['name'][] = $request->schedule_name;
+        //         $data['name']['desc'][] = $request->schedule_desc;
+        //         $data['name']['additional_information'][] = $request->schedule_additional;
+        //         $data['name']['schedule_start'][] = $request->schedule_start;
+        //         $data['name']['schedule_end'][] = $request->schedule_end;
+        //     }
+        // }
 
         $data[] = [
             'name' => 'company_id',
@@ -467,7 +467,7 @@ class EventController extends Controller
             $general_data['link'][] = $request['schedule_link'][$i];
             $general_data['additional_information'][] = $request['schedule_additional'][$i];
         }
-        $response = $this->MULTIPARTV2(env("API_URL").'/api/event-update?byEventid='. $id,$general_data);
+        $response = $this->MULTIPART(env("API_URL").'/api/event-update?byEventid='. $id,$general_data,$multipart_data);
         if ($response['status']==true) {
             return redirect('/dashboard/hackathon')->with('success', $response['message']);
         } else {
@@ -543,6 +543,26 @@ class EventController extends Controller
         } else {
             $err_messages = "Server Error";
             return view('one.errors.errors', compact('err_messages'));
+        }
+    }
+    public function updateStatusParticipantHackathon(Request $request,$status,$event_id,$schedule_id, $user_id)
+    {
+        $token = $request->session()->get('token');
+        $data = [
+            'event_id' => $event_id,
+            'employee_id' => $user_id,
+            'schedule_id' => $schedule_id,
+            'status' => $status,
+            'token' => $token
+            ];
+
+        $this->apiLib->setParams($data);
+        $result = $this->apiLib->generate('POST','/api/dashboard/hacktown/participant/update-status');
+        
+        if(!empty($result->status)){
+            return redirect()->back()->with('success', $result->message);
+        }else{
+            return redirect()->back()->with('error', $result->message);
         }
     }
 }

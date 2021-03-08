@@ -73,7 +73,7 @@ class AdminController extends Controller
     {
         $token = $request->session()->get('token');
         $validated = $request->validate([
-            'first_name' => 'required|string|max:10|min:3',
+            'first_name' => 'required|string|min:3',
             'company_name' => 'required',
             'role_id' => 'required',
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
