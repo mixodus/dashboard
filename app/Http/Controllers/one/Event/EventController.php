@@ -528,7 +528,7 @@ class EventController extends Controller
         $this->apiLib->setParams($put['data']);
         $result = $this->apiLib->generate('GET', '/api/dashboard/hacktown');
         $company = $this->apiLib->generate('GET', '/api/company');
-        $participant = $this->apiLib->generate('GET', '/api/dashboard/hacktown/participant?event_id=22');
+        $participant = $this->apiLib->generate('GET', '/api/dashboard/hacktown/participant?event_id=27');
         if (!$company) {
             throw new \Exception("Failed get company");
         }
