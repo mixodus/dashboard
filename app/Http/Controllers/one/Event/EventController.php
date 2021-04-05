@@ -103,25 +103,25 @@ class EventController extends Controller
             ];
         }
         $rewards = array();
-        if(count($request->reward_name)>0){
-            for ($i=0; $i < count($request->reward_name); $i++) { 
-                $rewards[] = [
-                    'reward_name' => $request->reward_name,
-                    'reward_value' => $request->reward_value,
-                    'reward_icon' => 'icon',
-                ];
-            }
-        }
-        $rewards = array();
-        if(count($request->schedule_name)>0){
-            for ($i=0; $i < count($request->schedule_name); $i++) { 
-                $data['name']['name'][] = $request->schedule_name;
-                $data['name']['desc'][] = $request->schedule_desc;
-                $data['name']['additional_information'][] = $request->schedule_additional;
-                $data['name']['schedule_start'][] = $request->schedule_start;
-                $data['name']['schedule_end'][] = $request->schedule_end;
-            }
-        }
+        // if(count($request->reward_name)>0){
+        //     for ($i=0; $i < count($request->reward_name); $i++) { 
+        //         $rewards[] = [
+        //             'reward_name' => $request->reward_name,
+        //             'reward_value' => $request->reward_value,
+        //             'reward_icon' => 'icon',
+        //         ];
+        //     }
+        // }
+        // $rewards = array();
+        // if(count($request->schedule_name)>0){
+        //     for ($i=0; $i < count($request->schedule_name); $i++) { 
+        //         $data['name']['name'][] = $request->schedule_name;
+        //         $data['name']['desc'][] = $request->schedule_desc;
+        //         $data['name']['additional_information'][] = $request->schedule_additional;
+        //         $data['name']['schedule_start'][] = $request->schedule_start;
+        //         $data['name']['schedule_end'][] = $request->schedule_end;
+        //     }
+        // }
 
         $data[] = [
             'name' => 'company_id',
@@ -528,10 +528,11 @@ class EventController extends Controller
         $this->apiLib->setParams($put['data']);
         $result = $this->apiLib->generate('GET', '/api/dashboard/hacktown');
         $company = $this->apiLib->generate('GET', '/api/company');
-        $participant = $this->apiLib->generate('GET', '/api/dashboard/hacktown/participant?event_id=27');
+        $participant = $this->apiLib->generate('GET', '/api/dashboard/hacktown/participant?event_id=26');
         if (!$company) {
             throw new \Exception("Failed get company");
         }
+
         $company = $company->data;
         $participant = $participant->data;
         $participant_status = $participant;

@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="date-input">Event Date</label>
+                        <label class="col-md-3 col-form-label" for="date-input">Event End Date</label>
                         <div class="col-md-9">
                             <input class="form-control" id="date-input" type="date" name="event_date" value="{{$data->event_date}}">
                         </div>
@@ -77,7 +77,7 @@
                     <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="textarea-input">Terms and Condition</label>
                         <div class="col-md-9">
-                            <textarea class="form-control" name="event_terms_coditions" rows="5" placeholder="Typing .." id="summary-ckeditor4">{{$data->event_terms_coditions}}</textarea>                    
+                            <textarea class="form-control" name="event_terms_coditions" rows="5" placeholder="Typing .." id="summary-ckeditor4">{{$data->event_terms_conditions}}</textarea>                    
                         </div>
                     </div>
                     <!-- Reward Section -->
@@ -131,7 +131,7 @@
                             <textarea class="form-control" name="schedule_additional[]" rows="3" >{{$raw->additional_information}}</textarea>                    
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" style="display:none">
                     <label class="col-md-3 col-form-label" for="textarea-input">Additional Link</label>
                         <div class="col-md-9">
                             <input class="form-control" id="text-input" type="text" name="schedule_link[]" value="{{$raw->link}}">                 
@@ -205,7 +205,7 @@
                             <dt class="col-sm-3">Event Name</dt>
                             <dd class="col-sm-9">{{$data->event_title}}</dd>
 
-                            <dt class="col-sm-3">Event Date</dt>
+                            <dt class="col-sm-3">Event End Date</dt>
                             <dd class="col-sm-9">{{$data->event_date}}</dd>
 
                             <dt class="col-sm-3">Description</dt>
@@ -218,7 +218,7 @@
                             <dd class="col-sm-9">{!!$data->event_additional_information!!}</dd>
 
                             <dt class="col-sm-3">Terms and Conditions</dt>
-                            <dd class="col-sm-9">{!!$data->event_terms_coditions!!}</dd>
+                            <dd class="col-sm-9">{!!$data->event_terms_conditions!!}</dd>
 
                             
                         </dl>
@@ -285,7 +285,7 @@
                                     <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
+                                        <th>Email</th>
                                         @foreach($data->eventSchedules as $key)
                                         <th>{{$key->name}}</th>
                                         @endforeach
@@ -295,9 +295,10 @@
                                     @foreach($participant_status as $index => $participant)
                                         <tr>
                                         <td>{{ $index+1 }}</td>
-                                        <td>{{ $participant->fullname }}</td>
+                                        <td>{{ $participant->email }}</td>
                                         @foreach($participant->schedule_status as $key)
                                         <th>
+					@if($key->status_timeline == 1)
                                         @if($key->status =="Failed")
                                         <p style="color:red">{{ $key->status }}</p>
                                         @elseif($key->status =="Passed")
@@ -305,6 +306,7 @@
                                         @else
                                         <p>{{ $key->status }}</p>
                                         @endif
+				
                                         <div class="dropdown">
                                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                                                 Update Status
@@ -315,6 +317,9 @@
                                                 <a class="dropdown-item" href="{{ env('APP_URL', '').'/dashboard/hackathon/update-status/Failed/'.$data->event_id.'/'.$key->schedule_id.'/'.$key->employee_id }}">Failed</a>
                                             </div>
                                             </div>
+					@else
+					<b>Upcoming</b>
+					@endif
                                         </th>
                                         @endforeach
                                         </tr>
