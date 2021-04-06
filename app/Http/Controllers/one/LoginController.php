@@ -37,7 +37,8 @@ class LoginController extends Controller {
 	
         if(!empty($result->status)){
 
-            session(['token'=> $result->data->token]);
+            session(['token'=> $result->data->token,'user_id'=> $result->data->user->user_id]);
+
             return redirect('/dashboard');
         }else{
 
