@@ -96,6 +96,16 @@ Route::group(['middleware' => ['login.check']], function () {
                     Route::get('/mobile-log', 'one\Log\LogController@mobileLog');
                     Route::get('/mobile-log/show/{id}', 'one\Log\LogController@mobileLogShow');
                 });
+
+                 //freelancer page
+                 Route::get('/freelancer', 'one\Freelancer\FreelancerController@dashboardFreelancer');
+                 Route::get('/freelancer/create', 'one\Freelancer\FreelancerController@formcreate');
+                 Route::post('/freelancer/store', 'one\Freelancer\FreelancerController@store');
+                 Route::post('/freelancer/update/{id}', 'one\Freelancer\FreelancerController@storeUpdate');
+                 Route::get('/freelancer/update/{id}', 'one\Freelancer\FreelancerController@formUpdate');
+                 Route::post('/freelancer/update/{id}/status', 'one\Freelancer\FreelancerController@storeStatus');
+                 Route::get('/freelancer/update/{id}/status', 'one\Freelancer\FreelancerController@formStatus');
+ 
             });
             
             // Route::prefix('base')->group(function () {  
