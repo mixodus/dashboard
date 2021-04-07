@@ -24,7 +24,7 @@ class FreelancerController extends Controller
 
 		try{
 			$this->apiLib->setParams($put['data']);
-			$result = $this->apiLib->generate('GET','/api/dashboard/referral/allWeb');
+			$result = $this->apiLib->generate('GET','/api/dashboard/referral');
 			if (!$result) {
 				throw new \Exception("Failed get dashboard freelancer");
 			}
