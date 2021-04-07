@@ -270,8 +270,8 @@
                                         <td>
                                         <a href="{{ $participant->idcard_file }}" target="_blank">ID Card </a>|
                                         <a href="{{ $participant->studentcard_file }}" target="_blank">Student Card </a>|
-                                        <a href="{{ $participant->transcripts_file }}" target="_blank">Transcripts Card </a>
-                                        <a href="{{ $participant->cv_file }}" target="_blank">CV </a>
+                                        <a href="{{ $participant->transcripts_file }}" target="_blank">Transcripts Card </a>|
+                                        <a href="https://api.oneindonesia.id/uploads/event/hackathon/{{ $participant->cv_file }}" target="_blank">CV </a>
                                         </td>
                                         </tr>
                                     @endforeach
