@@ -150,7 +150,9 @@ class AdminController extends Controller
             $data_role = $result_role->data;
             return view('one.Admin.usersUpdate', compact('data', 'data_role'));
         } catch (\Exception $e) {
-            return $this->services->response(404, $e->getMessage());
+            // return $this->services->response(404, $e->getMessage());
+            $err_messages = $e->getMessage(); 
+            return view('one.errors.errors', compact('err_messages'));
         }
     }
 
