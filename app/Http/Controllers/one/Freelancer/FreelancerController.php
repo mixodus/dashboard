@@ -17,20 +17,22 @@ class FreelancerController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function dashboardFreelancer(Request $request)
+	public function index(Request $request)
 	{
 		$token = $request->session()->get('token');
-		$put['data'] = ['token' => $token];
+		$put['data'] = ['token' => $token, 'SortByStatus'=>$request->SortByStatus];
 
 		try{
 			$this->apiLib->setParams($put['data']);
-			$result = $this->apiLib->generate('GET','/api/dashboard/referral/allWeb');
+			$result = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral');
 			if (!$result) {
 				throw new \Exception("Failed get dashboard freelancer");
 			}
-
+			//dd($result);
 			$freelancer = $result->data;
-			return view('one.freelancer.dashboardFreelancer', compact('freelancer'));
+			$action = $result->action->original;
+
+			return view('one.freelancer.dashboardFreelancer', compact('freelancer', 'action'));
 
 		} catch(\Exception $e) {
 
@@ -39,13 +41,53 @@ class FreelancerController extends Controller
 		}
 	}
 
+	public function adminFormcreate(Request $request)
+	{
+		$token = $request->session()->get('token');
+		$put['data'] = ['token' => $token];
+		
+		$this->apiLib->setParams($put['data']);
+		$result = $this->apiLib->generate('GET','/api/dashboard/referral');
+		
+		if($result->status == true)
+		{
+			$data = $result->data;
+			return view('one.freelancer.FreelancerCreateAdmin',compact('data'));
+		}
+	}
+
+	public function adminStore(Request $request){
+		$token = $request->session()->get('token','');
+		$this->setToken($token);
+		$general_data = $request->only(['source','referral_name','referral_email','referral_contact_no','referral_status'
+		,'job_position']);
+		$multipart_data = array();
+		
+		if($request->file('file')){
+			$multipart_data['file']   = $request->file;
+		}
+		
+		$general_data['referral_status'] = 'Pending';
+		$general_data['source'] ='web';
+		$general_data['referral_employee_id'] =$request->session()->get('user_id');;
+		
+		$result = $this->MULTIPART(env("API_URL").'/api/dashboard/referral',$general_data,$multipart_data);
+
+		if($result['status'] == true)
+		{
+			return redirect('/dashboard/freelancer')->with('success', $result['message']);
+		}else{
+			return redirect()->back()->with('error', $result['message']);
+		} 
+	}
+
 	public function formcreate(Request $request)
 	{
 		$token = $request->session()->get('token');
 		$put['data'] = ['token' => $token];
 		
 		$this->apiLib->setParams($put['data']);
-		$result = $this->apiLib->generate('GET','/api/dashboard/referral/allWeb');
+		$result = $this->apiLib->generate('GET','/api/dashboard/referral');
 		
 		if($result->status == true)
 		{
@@ -58,7 +100,7 @@ class FreelancerController extends Controller
 		$token = $request->session()->get('token','');
 		$this->setToken($token);
 		$general_data = $request->only(['source','referral_name','referral_email','referral_contact_no','referral_status'
-		,'fee','job_position']);
+		,'job_position']);
 		$multipart_data = array();
 		
 		if($request->file('file')){
@@ -70,6 +112,42 @@ class FreelancerController extends Controller
 		$general_data['referral_employee_id'] =$request->session()->get('user_id');;
 		
 		$result = $this->MULTIPART(env("API_URL").'/api/dashboard/referral',$general_data,$multipart_data);
+
+		if($result['status'] == true)
+		{
+			return redirect('/dashboard/freelancer')->with('success', $result['message']);
+		}else{
+			return redirect()->back()->with('error', $result['message']);
+		} 
+	}
+
+	public function adminFormUpdate(Request $request, $id){
+		$token = $request->session()->get('token');
+		$put['data'] = ['token' => $token];
+		
+		$this->apiLib->setParams($put['data']);
+		$result = $this->apiLib->generate('GET','/api/dashboard/referral/update/'.$id);
+		if($result->status == true)
+		{
+			$data = $result->data;
+			return view('one.freelancer.FreelancerUpdateAdmin',compact('data'));
+		}
+	}
+
+	public function adminStoreUpdate(Request $request, $id){
+		$token = $request->session()->get('token','');
+		$this->setToken($token);
+		$general_data = $request->only(['source','referral_name','referral_email','referral_contact_no','fee','job_position']);
+		$multipart_data = array();
+		
+		if($request->file('file')){
+			$multipart_data['file'] = $request->file;
+		}
+		
+		$general_data['source'] ='web';
+		$general_data['referral_employee_id'] =$request->session()->get('user_id');;
+		
+		$result = $this->MULTIPART(env("API_URL").'/api/dashboard/referral/update/'.$id, $general_data, $multipart_data);
 
 		if($result['status'] == true)
 		{
@@ -95,8 +173,7 @@ class FreelancerController extends Controller
 	public function storeUpdate(Request $request, $id){
 		$token = $request->session()->get('token','');
 		$this->setToken($token);
-		$general_data = $request->only(['source','referral_name','referral_email','referral_contact_no','referral_status'
-		,'fee','job_position']);
+		$general_data = $request->only(['source','referral_name','referral_email','referral_contact_no','referral_status','job_position']);
 		$multipart_data = array();
 		
 		if($request->file('file')){
@@ -134,10 +211,8 @@ class FreelancerController extends Controller
 		$this->setToken($token);
 		$put['data'] = ['referral_status' => $request->referral_status];
 		
-		//dd($put['data']);
 		$this->apiLib->setParams($put['data']);
 		$result = $this->apiLib->generate('POST','/api/dashboard/referral/update/'.$id.'/status');
-
 		if($result->status == true)
 		{
 			return redirect('/dashboard/freelancer')->with('success', $result->message);
