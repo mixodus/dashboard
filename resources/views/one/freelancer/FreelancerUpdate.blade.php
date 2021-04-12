@@ -16,7 +16,7 @@
             @endif
               <div class="card">
                 <div class="card-header">
-                      <i class="fa fa-align-justify"></i>Create Freelance
+                      <i class="fa fa-align-justify"></i>Update Candidate
                 </div>
                 <div class="card-body">
                 <div class="row">
@@ -25,13 +25,13 @@
                         @csrf
                         @method('POST')
                       <label><b>Name :</b></label>
-                      <input class="form-control" name="referral_name" type="text" placeholder="Freelancer Name" value="{{$data->referral_name}}" required>
+                      <input class="form-control" name="referral_name" type="text" placeholder="Candidate's Name" value="{{$data->referral_name}}" required>
                       <br>
                       <label><b>Email :</b></label>
-                      <input class="form-control" name="referral_email" type="text" placeholder="Freelancer Email" value="{{$data->referral_email}}" required>
+                      <input class="form-control" name="referral_email" type="text" placeholder="Candidate's Email" value="{{$data->referral_email}}" required>
                       <br>
                       <label><b>Contact Number:</b></label>
-                      <input class="form-control" name="referral_contact_no" type="number" placeholder="Freelancer's Phone Number" value="{{$data->referral_contact_no}}" required>
+                      <input class="form-control" name="referral_contact_no" type="number" placeholder="Candidate's Phone Number" value="{{$data->referral_contact_no}}" required>
                       <br>
                       <label><b>Upload CV:</b></label>
                       <input class="form-control-file" name="file" type="file" placeholder="Uplaod CV" value="{{$data->file}}"> 
@@ -39,7 +39,7 @@
                       <p>Leave the file upload empty if you don't want to change your CV!</p>
                       <br>
                       <label><b>Job-Position:</b></label>
-                      <input class="form-control" name="job_position" type="text" placeholder="Job Position" value="{{$data->job_position}}" required>
+                      <input class="form-control" name="job_position" type="text" placeholder="Candidate's Job Position" value="{{$data->job_position}}" required>
                       <br>
                       <div class="card-footer">
                         <button class="btn btn-sm btn-primary" type="submit"> Submit</button>

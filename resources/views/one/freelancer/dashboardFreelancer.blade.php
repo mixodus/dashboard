@@ -5,7 +5,7 @@
 						<div class="fade-in">
 							<div class="card">
 								<div class="card-header">
-											<i class="fa fa-align-justify"></i>Dashboard Freelancer
+											<i class="fa fa-align-justify"></i>Dashboard Candidate
 											<br>
 											<br>
 											@if(in_array("add", $action))

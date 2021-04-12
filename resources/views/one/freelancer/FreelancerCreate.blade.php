@@ -16,7 +16,7 @@
 						@endif
 							<div class="card">
 								<div class="card-header">
-											<i class="fa fa-align-justify"></i>Create Freelance
+											<i class="fa fa-align-justify"></i>Create Candidate
 								</div>
 								<div class="card-body">
 								<div class="row">
@@ -25,13 +25,13 @@
 												@csrf
 												@method('POST')
 											<label><b>Name :</b></label>
-											<input class="form-control" name="referral_name" type="text" placeholder=" Freelancer Name"required>
+											<input class="form-control" name="referral_name" type="text" placeholder=" Candidate's Name"required>
 											<br>
 											<label><b>Email :</b></label>
-											<input class="form-control" name="referral_email" type="text" placeholder="Freelancer Email" required>
+											<input class="form-control" name="referral_email" type="text" placeholder="Candidate's Email" required>
 											<br>
 											<label><b>Contact Number:</b></label>
-											<input class="form-control" name="referral_contact_no" type="number" placeholder="Freelancer's Phone Number" required>
+											<input class="form-control" name="referral_contact_no" type="number" placeholder="Candidate's Phone Number" required>
 											<br>
 											<div class="form-group">
 												<!--<label for="referral_status"><b>Status :</b></label>
@@ -47,7 +47,7 @@
 											<input class="form-control-file" name="file" type="file" placeholder="Uplaod CV" required>
 											<br>
 											<label><b>Job-Position:</b></label>
-											<input class="form-control" name="job_position" type="text" placeholder="Job Position" required>
+											<input class="form-control" name="job_position" type="text" placeholder="Candidate's Job Position" required>
 											<br>
 											<div class="card-footer">
 												<button class="btn btn-sm btn-primary" type="submit"> Submit</button>
