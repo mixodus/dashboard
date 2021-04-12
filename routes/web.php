@@ -98,9 +98,13 @@ Route::group(['middleware' => ['login.check']], function () {
                 });
 
                  //freelancer page
-                 Route::get('/freelancer', 'one\Freelancer\FreelancerController@dashboardFreelancer');
+                 Route::get('/freelancer', 'one\Freelancer\FreelancerController@index');
+                 Route::get('/freelancer/admincreate', 'one\Freelancer\FreelancerController@adminFormcreate');
+                 Route::post('/freelancer/adminstore', 'one\Freelancer\FreelancerController@adminStore');
                  Route::get('/freelancer/create', 'one\Freelancer\FreelancerController@formcreate');
                  Route::post('/freelancer/store', 'one\Freelancer\FreelancerController@store');
+                 Route::post('/freelancer/adminupdate/{id}', 'one\Freelancer\FreelancerController@adminStoreUpdate');
+                 Route::get('/freelancer/adminupdate/{id}', 'one\Freelancer\FreelancerController@adminFormUpdate');
                  Route::post('/freelancer/update/{id}', 'one\Freelancer\FreelancerController@storeUpdate');
                  Route::get('/freelancer/update/{id}', 'one\Freelancer\FreelancerController@formUpdate');
                  Route::post('/freelancer/update/{id}/status', 'one\Freelancer\FreelancerController@storeStatus');

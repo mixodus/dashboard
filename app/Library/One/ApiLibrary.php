@@ -31,13 +31,52 @@ class ApiLibrary
         return $this->params;
     }
 
+    public function generateDataAPI($action = '', $setEndPoint, $timeOut = 30){
+
+        $this->apiBaseUrl = env("API_URL");
+
+        $action = strtoupper($action);
+        
+        $endpoint = $this->apiBaseUrl.$setEndPoint; 
+
+        $body = "";
+
+        $query['data'] = !empty($this->params)? $this->params : [];
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Api-Key' => env('API_KEY'),
+            'X-Token'  => $query['data']['token'],
+            'SortByStatus' => $query['data']['SortByStatus']
+        ];
+        $check = (count($query['data']) > 0)? $this->params : [];
+        $body = json_encode($check);
+        
+        try {
+            $client = new GuzzleClient([
+                'headers' => $headers
+            ]);
+    
+            $hits_api = $client->request($action, $endpoint, [
+                'body' => $body  
+            ]);
+            $response = json_decode($hits_api->getBody());
+            return $response;
+        }catch (\Throwable $e){
+            $response = $e->getResponse();
+            $responseBody = json_decode($response->getBody()->getContents());
+            return $responseBody;
+        }
+
+    }
+
     public function generate($action = '', $setEndPoint, $timeOut = 30){
         
         $this->apiBaseUrl = env("API_URL");
 
         $action = strtoupper($action);
         
-        $endpoint = $this->apiBaseUrl.$setEndPoint;
+        $endpoint = $this->apiBaseUrl.$setEndPoint; 
 	        
         $body = "";
         if($action=="POST"){
@@ -55,7 +94,7 @@ class ApiLibrary
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 'X-Api-Key' => env('API_KEY'),
-                'X-Token'  => $query['data']['token']     
+                'X-Token'  => $query['data']['token'],
             ];
             $check = (count($query['data']) > 0)? $this->params : [];
             $body = json_encode($check);
