@@ -32,7 +32,7 @@ class ApiLibrary
     }
 
     public function generateDataAPI($action = '', $setEndPoint, $timeOut = 30){
-
+        
         $this->apiBaseUrl = env("API_URL");
 
         $action = strtoupper($action);
@@ -47,7 +47,6 @@ class ApiLibrary
             'Content-Type' => 'application/json',
             'X-Api-Key' => env('API_KEY'),
             'X-Token'  => $query['data']['token'],
-            'SortByStatus' => $query['data']['SortByStatus']
         ];
         $check = (count($query['data']) > 0)? $this->params : [];
         $body = json_encode($check);
