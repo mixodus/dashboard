@@ -21,7 +21,7 @@
 								<div class="card-body">
 								<div class="row">
 										<div class="col-12">
-										<form method="POST" action="{{ env('APP_URL', '').'/dashboard/freelancer/store' }}" enctype="multipart/form-data">
+										<form method="POST" action="{{ env('APP_URL', '').'/dashboard/freelancer/adminstore' }}" enctype="multipart/form-data">
 												@csrf
 												@method('POST')
 											<label><b>Name :</b></label>
@@ -45,6 +45,9 @@
 											</div>
 											<label><b>Upload CV:</b></label>
 											<input class="form-control-file" name="file" type="file" placeholder="Uplaod CV" required>
+											<br>
+											<label><b>Fee:</b></label>
+											<input class="form-control" name="fee" type="number" placeholder="Candidate's Fees">
 											<br>
 											<label><b>Job-Position:</b></label>
 											<input class="form-control" name="job_position" type="text" placeholder="Candidate's Job Position" required>

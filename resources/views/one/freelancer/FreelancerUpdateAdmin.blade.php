@@ -21,7 +21,7 @@
                 <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                    <form method="POST" action="{{ env('APP_URL', '').'/dashboard/freelancer/update/'.$data->referral_id }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ env('APP_URL', '').'/dashboard/freelancer/adminupdate/'.$data->referral_id }}" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                       <label><b>Name :</b></label>
@@ -37,6 +37,9 @@
                       <input class="form-control-file" name="file" type="file" placeholder="Uplaod CV" value="{{$data->file}}"> 
                       <b>See your pervious CV: <a href ="{{ $data->file_url }}" target="_blank">Click Here!</a></b>
                       <p>Leave the file upload empty if you don't want to change your CV!</p>
+                      <br>
+                      <label><b>Fee:</b></label>
+                      <input class="form-control" name="fee" type="number" placeholder="Fees" value="{{$data->fee}}" required>
                       <br>
                       <label><b>Job-Position:</b></label>
                       <input class="form-control" name="job_position" type="text" placeholder="Candidate's Job Position" value="{{$data->job_position}}" required>

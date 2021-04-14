@@ -39,6 +39,10 @@ class LoginController extends Controller {
 
             session(['token'=> $result->data->token,'user_id'=> $result->data->user->user_id]);
 
+            if($result->data->user->role_id == 3){
+                return redirect('/dashboard/freelancer');
+            }
+
             return redirect('/dashboard');
         }else{
 
