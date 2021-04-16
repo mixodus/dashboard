@@ -28,7 +28,6 @@ class FreelancerController extends Controller
 			if (!$result) {
 				throw new \Exception("Failed get dashboard freelancer");
 			}
-			//dd($result);
 			$freelancer = $result->data;
 			$action = $result->action->original;
 
