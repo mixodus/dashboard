@@ -20,7 +20,7 @@ class FreelancerController extends Controller
 	public function index(Request $request)
 	{
 		$token = $request->session()->get('token');
-		$put['data'] = ['token' => $token, 'SortByStatus'=>$request->SortByStatus];
+		$put['data'] = ['token' => $token];
 
 		try{
 			$this->apiLib->setParams($put['data']);
@@ -31,7 +31,30 @@ class FreelancerController extends Controller
 			$freelancer = $result->data;
 			$action = $result->action->original;
 
-			return view('one.freelancer.dashboardFreelancer', compact('freelancer', 'action'));
+			$result_passed = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=Passed');
+            $result_complete = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=Complete');
+            $result_pending = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=Pending');
+            $result_inreview = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=InReview');
+			if (!$result_passed) {
+				throw new \Exception("Failed get dashboard freelancer");
+			}
+            if (!$result_complete) {
+				throw new \Exception("Failed get dashboard freelancer");
+			}
+            if (!$result_pending) {
+				throw new \Exception("Failed get dashboard freelancer");
+			}
+            if (!$result_inreview) {
+				throw new \Exception("Failed get dashboard freelancer");
+			}
+			$result = [
+                'passed' => $result_passed->data,
+                'complete' => $result_complete->data,
+                'pending' => $result_pending->data,
+                'inreview' => $result_inreview->data
+            ];
+
+			return view('one.freelancer.dashboardFreelancer', compact('freelancer', 'action', 'result'));
 
 		} catch(\Exception $e) {
 
