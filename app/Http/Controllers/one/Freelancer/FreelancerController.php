@@ -56,7 +56,7 @@ class FreelancerController extends Controller
 
 			return view('one.freelancer.dashboardFreelancer', compact('freelancer', 'action', 'result'));
 
-		} catch(\Exception $e) {
+		} catch(Exception $e) {
 
 			$err_messages = $e->getMessage(); 
 			return view('one.errors.errors', compact('err_messages'));
