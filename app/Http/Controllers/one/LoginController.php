@@ -42,6 +42,9 @@ class LoginController extends Controller {
             if($result->data->user->role_id == 3){
                 return redirect('/dashboard/freelancer');
             }
+            if($result->data->user->role_id == 5){
+                return redirect('/dashboard/freelancer');
+            }
 
             return redirect('/dashboard');
         }else{

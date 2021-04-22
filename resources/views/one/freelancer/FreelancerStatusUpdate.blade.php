@@ -24,16 +24,23 @@
                     <form method="POST" action="{{ env('APP_URL', '').'/dashboard/freelancer/update/'.$data->referral_id.'/status'}}" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
+                      <label><b>Name :</b></label>
+                      <input class="form-control" name="referral_name" type="text" placeholder="Candidate's Name" value="{{$data->referral_name}}" required>
+                      <br>
+                      <label><b>Email :</b></label>
+                      <input class="form-control" name="referral_email" type="text" placeholder="Candidate's Email" value="{{$data->referral_email}}" required>
+                      <br>
                       <label for="referral_status"><b>Update Status :</b></label>
                         <select class="form-control" name="referral_status" required>
-                          <option name="status" value="Success" {{ ( $data->referral_status == 'Success' ) ? 'selected' : '' }}>Success</option>
-                          <option name="status" value="Failed" {{ ( $data->referral_status == 'Failed' ) ? 'selected' : '' }}>Failed</option>
+                          <option name="status" value="Passed" {{ ( $data->referral_status == 'Passed' ) ? 'selected' : '' }}>Passed</option>
+                          <option name="status" value="NotPassed" {{ ( $data->referral_status == 'NotPassed' ) ? 'selected' : '' }}>NotPassed</option>
                           <option name="status" value="InReview" {{ ( $data->referral_status == 'InReview' ) ? 'selected' : '' }}>InReview</option>
                           <option name="status" value="Pending" {{ ( $data->referral_status == 'Pending' ) ? 'selected' : '' }}>Pending</option>
+                          <option name="status" value="Complete" {{ ( $data->referral_status == 'Complete' ) ? 'selected' : '' }}>Complete</option>
                         </select>
                       <div class="card-footer">
                         <button class="btn btn-sm btn-primary" type="submit"> Submit</button>
-                        <a href="{{ env('APP_URL', '').'/dashboard/user-management/admin' }}" class="btn btn-sm btn-danger" type="button"> Cancel</a>
+                        <a href="{{ env('APP_URL', '').'/dashboard/freelancer' }}" class="btn btn-sm btn-danger" type="button"> Cancel</a>
                       </div>
                       </form>
                     </div>
