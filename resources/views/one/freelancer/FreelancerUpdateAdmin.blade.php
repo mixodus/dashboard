@@ -39,7 +39,7 @@
                       <p>Leave the file upload empty if you don't want to change your CV!</p>
                       <br>
                       <label><b>Fee:</b></label>
-                      <input class="form-control" name="fee" type="number" placeholder="Fees" value="{{$data->fee}}" required>
+                      <input class="form-control" name="fee" type="number" placeholder="Fees" value="{{$data->fee}}">
                       <br>
                       <label><b>Job-Position:</b></label>
                       <input class="form-control" name="job_position" type="text" placeholder="Candidate's Job Position" value="{{$data->job_position}}" required>
