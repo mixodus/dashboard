@@ -35,6 +35,7 @@ class FreelancerController extends Controller
             $result_complete = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=Complete');
             $result_pending = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=Pending');
             $result_inreview = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=InReview');
+			$result_onprocess = $this->apiLib->generateDataAPI('GET','/api/dashboard/referral?SortByStatus=OnProcess');
 			if (!$result_passed) {
 				throw new \Exception("Failed get dashboard freelancer");
 			}
@@ -47,11 +48,15 @@ class FreelancerController extends Controller
             if (!$result_inreview) {
 				throw new \Exception("Failed get dashboard freelancer");
 			}
+			if (!$result_onprocess) {
+				throw new \Exception("Failed get dashboard freelancer");
+			}
 			$result = [
                 'passed' => $result_passed->data,
                 'complete' => $result_complete->data,
                 'pending' => $result_pending->data,
-                'inreview' => $result_inreview->data
+                'inreview' => $result_inreview->data,
+				'OnProcess' => $result_onprocess->data
             ];
 
 			return view('one.freelancer.dashboardFreelancer', compact('freelancer', 'action', 'result'));
