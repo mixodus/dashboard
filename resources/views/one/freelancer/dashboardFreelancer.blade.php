@@ -7,7 +7,7 @@
 	<div class="container-fluid">
         <div class="fade-in">
             <div class="row">
-        	    <div class="col-sm-6 col-lg-3">
+        	    <div class="col-sm col-lg">
                   <div class="card text-white bg-primary">
                     <div class="card-body pb-0">
                       <div class="text-value-lg">Passed</div>
@@ -25,7 +25,7 @@
                   </div>
                 </div>
                 <!-- /.col-->
-                <div class="col-sm-6 col-lg-3">
+                <div class="col-sm col-lg">
                   <div class="card text-white bg-info">
                     <div class="card-body pb-0">
                       <div class="text-value-lg">Complete</div>
@@ -42,7 +42,7 @@
                   </div>
                 </div>
                 <!-- /.col-->
-                <div class="col-sm-6 col-lg-3">
+                <div class="col-sm col-lg">
                   <div class="card text-white bg-warning">
                     <div class="card-body pb-0">
                       <div class="text-value-lg">Pending</div>
@@ -59,7 +59,7 @@
                   </div>
                 </div>
                 <!-- /.col-->
-                <div class="col-sm-6 col-lg-3">
+                <div class="col-sm col-lg">
                   <div class="card text-white bg-danger">
                     <div class="card-body pb-0">
                       <div class="text-value-lg">InReview</div>
@@ -72,6 +72,23 @@
                       </div>
                       <br>
                       <div><a class="btn btn-light" href="{{env('APP_URL').'/dashboard/freelancer?SortByStatus=InReview'}}">Click Here To See!</a><br><br></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.col-->
+                <div class="col-sm col-lg">
+                  <div class="card text-white bg-warning">
+                    <div class="card-body pb-0">
+                      <div class="text-value-lg">OnProcess</div>
+                      <div class="text-value-md">
+                      @if($result['OnProcess']==null)
+                        No Talents are in OnProcess!
+                      @else
+                        {{count($result['OnProcess'])}} Talents are OnProcess!
+                      @endif
+                      </div>
+                      <br>
+                      <div><a class="btn btn-light" href="{{env('APP_URL').'/dashboard/freelancer?SortByStatus=Pending'}}">Click Here To See!</a><br><br></div>
                     </div>
                   </div>
                 </div>

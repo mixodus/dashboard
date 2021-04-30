@@ -32,10 +32,13 @@
                       <br>
                       <label for="referral_status"><b>Update Status :</b></label>
                         <select class="form-control" name="referral_status" required>
+                          <option name="status" value="Pending" {{ ( $data->referral_status == 'Pending' ) ? 'selected' : '' }}>Pending</option>
+                          <option name="status" value="OnProcess" {{ ( $data->referral_status == 'OnProcess' ) ? 'selected' : '' }}>OnProcess</option>
+                          <option name="status" value="InReview" {{ ( $data->referral_status == 'InReview' ) ? 'selected' : '' }}>InReview</option>
                           <option name="status" value="Passed" {{ ( $data->referral_status == 'Passed' ) ? 'selected' : '' }}>Passed</option>
                           <option name="status" value="NotPassed" {{ ( $data->referral_status == 'NotPassed' ) ? 'selected' : '' }}>NotPassed</option>
-                          <option name="status" value="InReview" {{ ( $data->referral_status == 'InReview' ) ? 'selected' : '' }}>InReview</option>
-                          <option name="status" value="Pending" {{ ( $data->referral_status == 'Pending' ) ? 'selected' : '' }}>Pending</option>
+                          <option name="status" value="Paid-1" {{ ( $data->referral_status == 'Paid-1' ) ? 'selected' : '' }}>Paid-1</option>
+                          <option name="status" value="Paid-2" {{ ( $data->referral_status == 'Paid-2' ) ? 'selected' : '' }}>Paid-2</option>
                           <option name="status" value="Complete" {{ ( $data->referral_status == 'Complete' ) ? 'selected' : '' }}>Complete</option>
                         </select>
                       <div class="card-footer">
