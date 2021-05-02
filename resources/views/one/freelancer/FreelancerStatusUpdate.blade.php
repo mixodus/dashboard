@@ -24,11 +24,9 @@
                     <form method="POST" action="{{ env('APP_URL', '').'/dashboard/freelancer/update/'.$data->referral_id.'/status'}}" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
-                      <label><b>Name :</b></label>
-                      <input class="form-control" name="referral_name" type="text" placeholder="Candidate's Name" value="{{$data->referral_name}}" required>
+                      <label><b>Update {{$data->referral_name}}'s Status</b></label>
                       <br>
-                      <label><b>Email :</b></label>
-                      <input class="form-control" name="referral_email" type="text" placeholder="Candidate's Email" value="{{$data->referral_email}}" required>
+                      <label><b>Email : {{$data->referral_email}}</b></label>
                       <br>
                       <label for="referral_status"><b>Update Status :</b></label>
                         <select class="form-control" name="referral_status" required>

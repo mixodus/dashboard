@@ -51,7 +51,7 @@
 											<br>
 											<div class="card-footer">
 												<button class="btn btn-sm btn-primary" type="submit"> Submit</button>
-												<a href="{{ env('APP_URL', '').'/dashboard/user-management/admin' }}" class="btn btn-sm btn-danger" type="button"> Cancel</a>
+												<a href="{{ env('APP_URL', '').'/dashboard/freelancer' }}" class="btn btn-sm btn-danger" type="button"> Cancel</a>
 											</div>
 											</form>
 										</div>

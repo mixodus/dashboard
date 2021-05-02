@@ -88,7 +88,7 @@
                       @endif
                       </div>
                       <br>
-                      <div><a class="btn btn-light" href="{{env('APP_URL').'/dashboard/freelancer?SortByStatus=Pending'}}">Click Here To See!</a><br><br></div>
+                      <div><a class="btn btn-light" href="{{env('APP_URL').'/dashboard/freelancer?SortByStatus=OnProcess'}}">Click Here To See!</a><br><br></div>
                     </div>
                   </div>
                 </div>
