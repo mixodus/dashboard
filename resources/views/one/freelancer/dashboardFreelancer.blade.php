@@ -116,9 +116,12 @@
 												<select name="SortByStatus">
 													<option value="All">All</option>
 													<option value="Pending">Pending</option>
+													<option value="OnProcess">OnProcess</option>
 													<option value="InReview">InReview</option>
 													<option value="Passed">Passed</option>
 													<option value="NotPassed">Not Passed</option>
+													<option value="Paid-1">Paid-1</option>
+													<option value="Paid-2">Paid-2</option>
 													<option value="Complete">Complete</option>
 												</select>
 												<button type="submit">Search</button>
