@@ -301,5 +301,4 @@ class JobsController extends Controller
 
         return response()->json(['success' => $success, 'message' => $message]);
     }
-    //
 }
