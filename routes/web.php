@@ -26,12 +26,12 @@ Route::group(['middleware' => ['login.check']], function () {
                 Route::get('/location/city/show/{id}', 'one\General\LocationController@get_city');
 
                 //Jobs Page
-                Route::get('/jobs', 'one\jobs\JobsController@index');
-                Route::get('/jobs/create', 'one\jobs\JobsController@create');
-                Route::post('/jobs/store', 'one\jobs\JobsController@store');
-                Route::get('/jobs/edit/{id}', 'one\jobs\JobsController@edit');
-                Route::put('/jobs/update/{id}', 'one\jobs\JobsController@update');
-                Route::get('/jobs/delete/{id}', 'one\jobs\JobsController@destroy');
+                Route::get('/jobs', 'one\Jobs\JobsController@index');
+                Route::get('/jobs/create', 'one\Jobs\JobsController@create');
+                Route::post('/jobs/store', 'one\Jobs\JobsController@store');
+                Route::get('/jobs/edit/{id}', 'one\Jobs\JobsController@edit');
+                Route::put('/jobs/update/{id}', 'one\Jobs\JobsController@update');
+                Route::get('/jobs/delete/{id}', 'one\Jobs\JobsController@destroy');
 
                 //News Page
                 Route::get('/news-article', 'one\News\NewsController@index');
