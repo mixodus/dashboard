@@ -86,28 +86,6 @@ class JobsController extends Controller
     public function store(Request $request)
     {
         $token = $request->session()->get('token');
-        $validated = $request->validate([
-            'company_id' => "required|integer",
-            'job_title' => 'required|string',
-            'designation_id' => 'required|integer',
-            'job_type' => 'required|integer',
-            'job_vacancy' => 'required|integer',
-            'gender' => 'required|string',
-            'minimum_experience' => 'nullable|string',
-            'date_of_closing' => 'required|date',
-            'short_description' => 'nullable|string',
-            'long_description' => 'nullable|string',
-            'status' => 'required|integer',
-            'country' => 'nullable|string',
-            'province' => 'nullable|integer',
-            'city_id' => 'nullable|integer',
-            'districts_id' => 'nullable|integer',
-            'subdistrict_id' => 'nullable|integer',
-            'currency_id' => 'required|integer',
-            'salary_desc' => 'nullable|string',
-            'salary_start' => 'integer',
-            'salary_end' => 'integer',
-        ]);
 
         $data = [
             'company_id' => $request->company_id,
@@ -132,13 +110,14 @@ class JobsController extends Controller
             'salary_end' => $request->salary_end,
             'token' => $token
             ];
+        
 
         $this->apiLib->setParams($data);
         $result = $this->apiLib->generate('POST','/api/jobs/create');
-        if(!empty($result->status)){
-            return redirect('/dashboard/news-article')->with('error', $result->message);
+        if($result->status == true){
+             return redirect('/dashboard/jobs')->with('success', $result->message);
         }else{
-            return redirect()->back()->with('error', $result->message);
+             return redirect()->back()->with('error', $result->message);
         }
     }
 
