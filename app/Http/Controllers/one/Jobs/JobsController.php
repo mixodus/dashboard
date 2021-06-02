@@ -280,4 +280,57 @@ class JobsController extends Controller
 
         return response()->json(['success' => $success, 'message' => $message]);
     }
+
+    public function details(Request $request, $id)
+    {
+        $token = $request->session()->get('token');
+        $put['data'] = ['token' => $token];
+        try {
+            $this->apiLib->setParams($put['data']);
+            $get_job = $this->apiLib->generate('GET','/api/jobs/show/'.$id);
+            if (!$get_job) {
+                throw new \Exception("Failed get job");
+            }
+            $company = $this->apiLib->generate('GET','/api/company/'.$get_job->data->company_id);
+            if (!$company) {
+                throw new \Exception("Failed get company");
+            }
+
+            $country = $this->apiLib->generate('GET','/api/location/country/'.$get_job->data->country);
+            if (!$country) {
+                throw new \Exception("Failed get country");
+            }
+
+            $province = $this->apiLib->generate('GET','/api/location/province/'.$get_job->data->province);
+            if (!$province) {
+                throw new \Exception("Failed get province");
+            }
+
+            
+
+            $data_job = $get_job->data;
+            $data_company = $company->data;
+            $data_country = $country->data;
+            $data_province = $province->data;
+
+            $city = $this->apiLib->generate('GET','/api/location/city/id/'.$get_job->data->city_id);
+            if (!$city) {
+                throw new \Exception("Failed get role");
+            }
+            $data_city = $city->data;
+
+            $date = null;
+            if(!is_null($data_job->date_of_closing)){
+                $date = date('Y-m-d', strtotime($data_job->date_of_closing));
+            }
+
+            $participant = $this->apiLib->generate('GET','/api/job_post/'.$id.'/users');
+            $data_participant = $participant->data;
+
+            return view('one.jobs.jobsDetails', compact('data_job','data_country','data_province', 'data_company', 'data_city', 'date','data_participant'));
+        } catch (\Exception $e) {  
+            $err_messages = $e->getMessage(); 
+            return view('one.errors.errors', compact('err_messages'));
+        }
+    }
 }

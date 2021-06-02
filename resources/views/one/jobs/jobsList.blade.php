@@ -26,6 +26,7 @@
                             <th>Status</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -36,6 +37,7 @@
                               <td>{{ $results->job_title }}</td>
                               <td>{{ $results->minimum_experience }} year</td>
                               <td>{{ ($results->status == 1)? "Active" : "Not Active" }}</td>
+                              <td><a href="{{ env('APP_URL', '').'/dashboard/jobs/details/'.$results->job_id }}" class="btn btn-block btn-primary">Details</a></td>
                               <td>
                                 @if(in_array("edit", $action))
                                 <a href="{{ env('APP_URL', '').'/dashboard/jobs/edit/'.$results->job_id }}" class="btn btn-block btn-dark">Edit</a>

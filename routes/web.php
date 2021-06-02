@@ -29,6 +29,7 @@ Route::group(['middleware' => ['login.check']], function () {
                 Route::get('/jobs', 'one\Jobs\JobsController@index');
                 Route::get('/jobs/create', 'one\Jobs\JobsController@create');
                 Route::post('/jobs/store', 'one\Jobs\JobsController@store');
+                Route::get('/jobs/details/{id}', 'one\Jobs\JobsController@details');
                 Route::get('/jobs/edit/{id}', 'one\Jobs\JobsController@edit');
                 Route::put('/jobs/update/{id}', 'one\Jobs\JobsController@update');
                 Route::get('/jobs/delete/{id}', 'one\Jobs\JobsController@destroy');
@@ -109,6 +110,20 @@ Route::group(['middleware' => ['login.check']], function () {
                  Route::get('/freelancer/update/{id}', 'one\Freelancer\FreelancerController@formUpdate');
                  Route::post('/freelancer/update/{id}/status', 'one\Freelancer\FreelancerController@storeStatus');
                  Route::get('/freelancer/update/{id}/status', 'one\Freelancer\FreelancerController@formStatus');
+                 
+                 //Topic page
+                 Route::get('/voting', 'one\Topic\TopicController@index');
+                 Route::get('/topic/create', 'one\Topic\TopicController@topicFormCreate');
+                 Route::post('/topic/create/store', 'one\Topic\TopicController@topicFormCreateStore');
+                 Route::get('/topic/create/candidate/{id}', 'one\Topic\TopicController@candidateFormCreate');
+                 Route::post('/topic/create/candidate/{id}/store', 'one\Topic\TopicController@candidateFormCreateStore');
+                 Route::get('/topic/update/{id}', 'one\Topic\TopicController@topicFormUpdate');
+                 Route::get('/topic/update/candidate/{id}/{ch}', 'one\Topic\TopicController@candidateFormUpdate');
+                 Route::post('/topic/update/candidate/{id}/{ch}/store', 'one\Topic\TopicController@candidateFormUpdateStore');
+                 Route::get('/topic/delete/candidate/{ch}', 'one\Topic\TopicController@deleteCandidate');
+                 Route::post('/topic/update/{id}/store', 'one\Topic\TopicController@topicFormUpdateStore');
+                 Route::get('/topic/delete/{id}', 'one\Topic\TopicController@topicDelete');
+                 Route::get('/topic/details/{id}', 'one\Topic\TopicController@details');
  
             });
             
